@@ -62,7 +62,8 @@ nav a:hover {
 .contact-form textarea {
   width: 100%;                      /* fill available space */
   box-sizing: border-box;           /* include padding/border in width */
-  font: inherit;                    /* use same font as rest of page */
+  font: inherit;
+  border: 1px solid #292626;
   padding: 0.5em;
 }
 
