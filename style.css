@@ -77,4 +77,44 @@ nav a:hover {
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1em;                 /* space between articles */
+  grid-auto-rows: auto;     /* define row sizing for subgrid to latch onto */
+  align-items: start;       /* prevent stretched cards */
+}
+
+/* ========== Card layout with subgrid (children) ========== */
+/* Use subgrid on rows so inner pieces (img, h2, text) align across columns */
+@supports (grid-template-rows: subgrid) {
+  .projects > article {
+    display: grid;
+    grid-template-rows: subgrid; /* inherit the parent row tracks */
+    grid-row: span 3;            /* each article spans 3 rows of the parent */
+    gap: 0.5em;                  /* space within each article */
+  }
+
+  /* Place content on consistent rows */
+  .projects > article img {
+    grid-row: 1;
+    width: 100%;
+    aspect-ratio: 4 / 3;         /* keeps images the same visual height */
+    object-fit: cover;           /* crops to fill without distortion */
+    display: block;
+  }
+
+  .projects > article h2 {
+    grid-row: 2;
+    margin: 0;                   /* avoid extra spacing */
+  }
+
+  .projects > article p {
+    grid-row: 3;
+    margin: 0;
+  }
+}
+
+h1 { font-size: 400%; }      /* clearly larger than h2 for contrast */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;          /* tighter leading for headings */
+  text-wrap: balance;        /* nicer line breaks for multi-line headings */
 }
