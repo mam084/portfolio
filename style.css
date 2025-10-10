@@ -47,3 +47,28 @@ nav a:hover {
   border-bottom: 0.4em solid var(--color-accent);
   padding-bottom: 0.1em; /* keep height consistent on hover */
 }
+
+.contact-form {
+  display: grid;
+  grid-template-columns: auto 1fr;  /* label column + input column */
+  gap: 1em;                         /* spacing between rows/columns */
+}
+
+.contact-form label {
+  align-self: center;               /* vertically center label text */
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;                      /* fill available space */
+  box-sizing: border-box;           /* include padding/border in width */
+  font: inherit;                    /* use same font as rest of page */
+  padding: 0.5em;
+}
+
+.contact-form button {
+  grid-column: 1 / -1;              /* make button span full width */
+  padding: 0.5em 1em;
+  font: inherit;
+  cursor: pointer;
+}
