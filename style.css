@@ -118,3 +118,50 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;          /* tighter leading for headings */
   text-wrap: balance;        /* nicer line breaks for multi-line headings */
 }
+
+/* ===== CV page ===== */
+.cv main { display: grid; gap: 1.75rem; }
+
+/* Name & contact */
+.cv > header { margin-block: 1.5rem 1rem; text-align: center; }
+.cv > header h1 { margin: 0 0 0.25rem 0; } /* big size already global */
+.cv > header p { margin: 0; opacity: 0.85; font-size: 0.95rem; }
+.cv > header a:hover { text-decoration: underline; text-decoration-color: var(--color-accent); }
+
+/* Section headers */
+.cv main > section > header h2 {
+  margin: 0 0 0.5rem 0;
+  border-bottom: 2px solid oklch(80% 3% 200);
+  padding-bottom: 0.25rem;
+}
+
+/* Entry titles & meta */
+.cv article h3 { margin: 0 0 0.25rem 0; font-weight: 600; }
+.cv article p:first-of-type { margin: 0 0 0.5rem 0; font-size: 0.95rem; opacity: 0.9; }
+
+/* Lists */
+.cv ul { margin: 0.25rem 0 1rem 1.25rem; padding: 0; }
+.cv li { margin-block: 0.25rem; }
+.cv li::marker { color: var(--color-accent); }
+
+/* Section rhythm */
+.cv main > section { padding-block: 0.5rem 0.75rem; }
+.cv main > section + section { border-top: 1px solid oklch(92% 2% 200); }
+
+/* Links inside CV body */
+.cv a { text-decoration: none; color: inherit;
+  border-bottom: 1px solid color-mix(in oklch, var(--color-accent) 40%, transparent); }
+.cv a:hover { border-bottom-color: var(--color-accent); }
+
+/* Responsive tweaks */
+@media (max-width: 520px) {
+  .cv > header p, .cv article p:first-of-type { font-size: 0.9rem; }
+}
+
+/* Print */
+@media print {
+  nav { display: none; }
+  body { max-width: none; padding: 0; }
+  .cv a { border: none; text-decoration: underline; }
+  .cv main > section + section { border-top: 1px solid #000; }
+}
