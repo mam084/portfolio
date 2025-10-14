@@ -29,7 +29,8 @@ for (const p of pages) {
   nav.insertAdjacentHTML("beforeend", `<a href="${url}">${p.title}</a>`);
 }
 
-
+const normalizePath = (p) =>
+  p.replace(/\/index\.html$/i, "").replace(/\/$/, "");
 
 const navLinks = $$("nav a");
 const currentLink = navLinks.find((a) => {
