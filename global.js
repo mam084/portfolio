@@ -18,7 +18,7 @@ document.body.prepend(nav);
 
 
 const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
-// IMPORTANT: set this to your GH Pages repo name (yours is /portfolio/)
+
 const BASE_PATH = isLocal ? "/" : "/portfolio/";
 
 
@@ -29,26 +29,28 @@ for (const p of pages) {
   let a = document.createElement('a');
   a.href = url;
   a.textContent = p.title;
-  nav.append(a);
+  
   if (a.host === location.host && a.pathname === location.pathname) {
     a.classList.add('current');
   }
   if (a.host !== location.host) {
     a.target = "_blank";
   }
+
+  nav.append(a);
 }
 
-const normalizePath = (p) =>
-  p.replace(/\/index\.html$/i, "").replace(/\/$/, "");
+// const normalizePath = (p) =>
+//   p.replace(/\/index\.html$/i, "").replace(/\/$/, "");
 
-const navLinks = $$("nav a");
-const currentLink = navLinks.find((a) => {
-  const aURL = new URL(a.href, location.origin);
-  return (
-    aURL.host === location.host &&
-    normalizePath(aURL.pathname) === normalizePath(location.pathname)
-  );
-});
+// const navLinks = $$("nav a");
+// const currentLink = navLinks.find((a) => {
+//   const aURL = new URL(a.href, location.origin);
+//   return (
+//     aURL.host === location.host &&
+//     normalizePath(aURL.pathname) === normalizePath(location.pathname)
+//   );
+// });
 
 
 
