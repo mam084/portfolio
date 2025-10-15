@@ -26,7 +26,10 @@ for (const p of pages) {
   let url = p.url;
 
   url = !url.startsWith("http") ? BASE_PATH + url : url;
-  nav.insertAdjacentHTML("beforeend", `<a href="${url}">${p.title}</a>`);
+  let a = document.createElement('a');
+  a.href = url;
+  a.textContent = title;
+  nav.append(a);
 }
 
 const normalizePath = (p) =>
@@ -41,7 +44,16 @@ const currentLink = navLinks.find((a) => {
   );
 });
 
-if (currentLink) {
-  currentLink.classList.add("current");
-  currentLink.setAttribute("aria-current", "page"); // accessibility
+if (a.host === location.host && a.pathname === location.pathname) {
+  a.classList.add('current');
 }
+
+if (a.host !== location.host) {
+    a.target = "_blank";
+    a.rel = "noopener noreferrer"; // security best practice
+  }
+
+// if (currentLink) {
+//   currentLink.classList.add("current");
+//   currentLink.setAttribute("aria-current", "page"); // accessibility
+// }
