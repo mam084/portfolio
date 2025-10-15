@@ -40,21 +40,4 @@ for (const p of pages) {
   nav.append(a);
 }
 
-// const normalizePath = (p) =>
-//   p.replace(/\/index\.html$/i, "").replace(/\/$/, "");
 
-// const navLinks = $$("nav a");
-// const currentLink = navLinks.find((a) => {
-//   const aURL = new URL(a.href, location.origin);
-//   return (
-//     aURL.host === location.host &&
-//     normalizePath(aURL.pathname) === normalizePath(location.pathname)
-//   );
-// });
-
-
-
-// if (currentLink) {
-//   currentLink.classList.add("current");
-//   currentLink.setAttribute("aria-current", "page"); // accessibility
-// }
