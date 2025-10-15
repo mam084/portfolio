@@ -2,7 +2,7 @@
 
 html {
   --color-accent: oklch(65% 50% 0);
-  accent-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+  accent-color: var(--color-accent);
   color-scheme: light dark;
 }
 
@@ -48,6 +48,7 @@ nav a.current {
 nav a:hover {
   border-bottom: 0.4em solid var(--color-accent);
   padding-bottom: 0.1em; /* keep height consistent on hover */
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);;
 }
 
 .contact-form {
