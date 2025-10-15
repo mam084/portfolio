@@ -30,6 +30,12 @@ for (const p of pages) {
   a.href = url;
   a.textContent = title;
   nav.append(a);
+  if (a.host === location.host && a.pathname === location.pathname) {
+    a.classList.add('current');
+  }
+  if (a.host !== location.host) {
+    a.target = "_blank";
+  }
 }
 
 const normalizePath = (p) =>
@@ -44,14 +50,7 @@ const currentLink = navLinks.find((a) => {
   );
 });
 
-if (a.host === location.host && a.pathname === location.pathname) {
-  a.classList.add('current');
-}
 
-if (a.host !== location.host) {
-    a.target = "_blank";
-    a.rel = "noopener noreferrer"; // security best practice
-  }
 
 // if (currentLink) {
 //   currentLink.classList.add("current");
