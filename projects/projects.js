@@ -4,7 +4,7 @@ try {
   const projects = await fetchJSON('../lib/projects.json');
 
   const projectsContainer = document.querySelector('.projects');
-  renderProjects(projects, projectsContainer, 'h2'); // or 'h3', etc.
+  renderProjects(projects, projectsContainer, 'h2');
 
   const titleEl = document.querySelector('.projects-title');
   if (titleEl) {
