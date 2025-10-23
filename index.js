@@ -1,8 +1,8 @@
-import { fetchJSON, renderProjects } from 'global.js'; // adjust path if needed
+import { fetchJSON, renderProjects } from './global.js'; // adjust path if needed
 
 async function init() {
   try {
-    const projects = await fetchJSON('lib/projects.json');
+    const projects = await fetchJSON('./lib/projects.json');
 
     const latestProjects = Array.isArray(projects) ? projects.slice(0, 3) : [];
 
