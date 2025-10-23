@@ -190,3 +190,25 @@ h1, h2, h3, h4, h5, h6 {
   .cv a { border: none; text-decoration: underline; }
   .cv main > section + section { border-top: 1px solid #000; }
 }
+
+.profile-stats__title { margin-bottom: 0.5rem; }
+.profile-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* four equal columns */
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  margin: 0;
+}
+.profile-stats__grid dt,
+.profile-stats__grid dd {
+  margin: 0;
+}
+.profile-stats__grid dt { 
+  font-weight: 600;
+  grid-row: 1;               /* all labels on row 1 */
+  justify-self: start;
+}
+.profile-stats__grid dd { 
+  grid-row: 2;               /* all values on row 2 */
+  justify-self: start;
+}

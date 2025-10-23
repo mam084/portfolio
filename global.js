@@ -90,6 +90,12 @@ export async function fetchJSON(url) {
   }
 }
 
+export async function fetchGitHubData(username) {
+  if (!username) throw new Error('fetchGitHubData: username is required');
+  return fetchJSON(`https://api.github.com/users/${encodeURIComponent(username)}`);
+}
+
+
 export function renderProjects(projects, containerElement, headingLevel = 'h2') {
   if (!containerElement || !(containerElement instanceof Element)) {
     console.error('renderProjects: invalid containerElement:', containerElement);
