@@ -76,63 +76,87 @@ mql.addEventListener?.("change", () => {
   }
 });
 
+e// global.js (module)
+
 export async function fetchJSON(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch projects: ${response.status} ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching or parsing JSON data:', error);
-    throw error;
-  }
+  const res = await fetch(url, { cache: "no-store" }); // avoid stale JSON
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
+  return res.json();
 }
 
-export async function fetchGitHubData(username) {
-  if (!username) throw new Error('fetchGitHubData: username is required');
-  return fetchJSON(`https://api.github.com/users/${encodeURIComponent(username)}`);
+// Compute site base like “/portfolio/” so assets work from / and /projects/
+function siteBase() {
+  const parts = location.pathname.split("/").filter(Boolean); // ["portfolio", "projects", ...]
+  return parts.length ? `/${parts[0]}/` : "/"; // "/portfolio/" on GH Pages repo site
 }
 
+// Resolve asset paths so "../images/..." also works on the home page
+function resolveAsset(src) {
+  if (!src) return src;
+  if (/^https?:\/\//i.test(src)) return src; // absolute URL
+  if (src.startsWith("/")) return src;       // already root-absolute
 
-export function renderProjects(projects, containerElement, headingLevel = 'h2') {
+  // strip leading ./ or ../ segments
+  const cleaned = src.replace(/^(\.\/|\.\.\/)+/, "");
+  // if caller passed "images/foo.png" or "../images/foo.png", map to "/<repo>/images/foo.png"
+  return siteBase() + cleaned;
+}
+
+export function renderProjects(projects, containerElement, headingLevel = "h2") {
   if (!containerElement || !(containerElement instanceof Element)) {
-    console.error('renderProjects: invalid containerElement:', containerElement);
+    console.error("renderProjects: invalid containerElement:", containerElement);
     return;
   }
 
-  // Validate heading level
-  const validHeadings = new Set(['h1','h2','h3','h4','h5','h6']);
-  const H = validHeadings.has(String(headingLevel).toLowerCase())
+  // Heading validation
+  const H = new Set(["h1","h2","h3","h4","h5","h6"]).has(String(headingLevel).toLowerCase())
     ? String(headingLevel).toLowerCase()
-    : 'h2';
+    : "h2";
 
-  // Clear previous content so re-renders don’t duplicate
-  containerElement.innerHTML = '';
+  containerElement.innerHTML = "";
 
-  // Handle empty arrays
   if (!Array.isArray(projects) || projects.length === 0) {
-    const empty = document.createElement('p');
-    empty.className = 'projects-empty';
-    empty.textContent = 'No projects to show yet.';
+    const empty = document.createElement("p");
+    empty.className = "projects-empty";
+    empty.textContent = "No projects to show yet.";
     containerElement.appendChild(empty);
     return;
   }
 
-  // Render each project
-  for (const project of projects) {
-    const article = document.createElement('article');
+  // Newest first when year is present; items without year sink
+  const items = [...projects].sort((a, b) => {
+    const ya = Number.isFinite(+a?.year) ? +a.year : -Infinity;
+    const yb = Number.isFinite(+b?.year) ? +b.year : -Infinity;
+    return yb - ya;
+  });
 
-    // Fallbacks for missing fields
-    const title = project?.title ?? 'Untitled Project';
-    const img   = project?.image ?? 'https://via.placeholder.com/600x400?text=No+Image';
-    const desc  = project?.description ?? 'No description provided.';
+  for (const p of items) {
+    const article = document.createElement("article");
+    article.className = "project";
+
+    const title = p?.title ?? "Untitled Project";
+    const img   = resolveAsset(p?.image ?? "images/placeholder.png");
+    const desc  = p?.description ?? "";
+    const url   = p?.url ?? null;
+    const repo  = p?.repo ?? null;
+    const year  = p?.year ?? null;
+
+    const yearBadge = year
+      ? `<span class="project-year" aria-label="Year">${year}</span>`
+      : "";
+
+    const linksHTML = (url || repo)
+      ? `<div class="project-links">
+           ${url  ? `<a class="project-link demo" href="${url}"  target="_blank" rel="noopener noreferrer">Live</a>` : ""}
+           ${repo ? `<a class="project-link code" href="${repo}" target="_blank" rel="noopener noreferrer">Repo</a>` : ""}
+         </div>`
+      : "";
 
     article.innerHTML = `
-      <${H} class="project-title">${title}</${H}>
-      <img class="project-image" src="${img}" alt="${title}">
-      <p class="project-description">${desc}</p>
+      <${H} class="project-title">${title} ${yearBadge}</${H}>
+      <img class="project-image" src="${img}" alt="${title}" loading="lazy">
+      ${desc ? `<p class="project-description">${desc}</p>` : ""}
+      ${linksHTML}
     `;
 
     containerElement.appendChild(article);

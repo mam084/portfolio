@@ -1,25 +1,39 @@
 import { fetchJSON, renderProjects, fetchGitHubData  } from './global.js'; // adjust path if needed
 
-async function init() {
-  try {
-    const projects = await fetchJSON('./lib/projects.json');
 
-    const latestProjects = Array.isArray(projects) ? projects.slice(0, 3) : [];
+// same paths but rooted for home
+const CANDIDATES = [
+  "./lib/projects.json",
+];
 
-    const container = document.querySelector('.projects');
-    if (!container) {
-      console.error('Missing .projects container on the home page.');
-      return;
-    }
-
-    renderProjects(latestProjects, container, 'h3'); 
-  } catch (err) {
-    console.error('Failed to load latest projects on home page:', err);
-    const container = document.querySelector('.projects');
-    if (container) {
-      container.innerHTML = `<p class="error">Couldn’t load latest projects right now.</p>`;
+async function loadProjects() {
+  let lastErr = null;
+  for (const base of CANDIDATES) {
+    try {
+      const data = await fetchJSON(`${base}?v=${Date.now()}`);
+      if (Array.isArray(data)) return data;
+    } catch (e) {
+      lastErr = e;
     }
   }
+  throw lastErr ?? new Error("Could not load projects.json");
+}
+
+try {
+  const projects = await loadProjects();
+
+  // Newest first is already handled inside render; just pick first N
+  const latest = projects
+    .slice() // clone
+    .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
+    .slice(0, 3);
+
+  const container = document.querySelector(".projects");
+  renderProjects(latest, container, "h3");
+} catch (err) {
+  console.error("Failed to load projects on home:", err);
+}
+
   try {
     const githubData = await fetchGitHubData('mam084');
 
@@ -45,7 +59,7 @@ async function init() {
       `;
     }
   }
-}
+
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);

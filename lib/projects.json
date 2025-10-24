@@ -9,8 +9,11 @@
 	},
 	{
 		"title": "Architecto minima sed omnis?",
-		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Est, reiciendis aspernatur debitis maxime et itaque animi sit quod quo, tempore incidunt tempora dignissimos exercitationem enim numquam quam quaerat optio laborum ut unde hic delectus laboriosam? Quasi, cupiditate corporis."
+		"image": "../images/plot_value_by_category_boxplot.png",
+		"description": "Est, reiciendis aspernatur debitis maxime et itaque animi sit quod quo, tempore incidunt tempora dignissimos exercitationem enim numquam quam quaerat optio laborum ut unde hic delectus laboriosam? Quasi, cupiditate corporis.",
+		"url": "https://github.com/mam084/project1/blob/main/Project%201_%20Expository%20Visualization.pdf",
+		"repo": "https://github.com/mam084/project1/tree/main",
+		"year": 2025
 	},
 	{
 		"title": "Amazon Review Sentiment as a Predictor of Economic Trends",
