@@ -145,21 +145,21 @@ export function renderProjects(projects, containerElement, headingLevel = "h2") 
       ? `<span class="project-year" aria-label="Year">${year}</span>`
       : "";
 
-    const linksHTML = (url || repo)
-      ? `<div class="project-links">
-           ${url  ? `<a class="project-link demo" href="${url}"  target="_blank" rel="noopener noreferrer">Live</a>` : ""}
-           ${repo ? `<a class="project-link code" href="${repo}" target="_blank" rel="noopener noreferrer">Repo</a>` : ""}
-         </div>`
-      : "";
+    const linksHTML = `
+      ${url ? `<a class="project-link demo" href="${url}" target="_blank" rel="noopener noreferrer">Live</a>` : ''}
+      ${repo ? `<a class="project-link code" href="${repo}" target="_blank" rel="noopener noreferrer">Repo</a>` : ''}
+    `;
+
 
     article.innerHTML = `
-    <${H} class="project-title">${title} ${yearBadge}</${H}>
-    <img class="project-image" src="${img}" alt="${title}" loading="lazy">
-    ${desc ? `<p class="project-description">${desc}</p>` : ''}
-    <div class="project-footer">
-      ${linksHTML}
-    </div>
-  `;
+      <${H} class="project-title">${title} ${yearBadge}</${H}>
+      <img class="project-image" src="${img}" alt="${title}" loading="lazy">
+
+      <div class="project-body">
+        ${desc ? `<p class="project-description">${desc}</p>` : ''}
+        ${linksHTML ? `<div class="project-links">${linksHTML}</div>` : ''}
+      </div>
+    `;
 
 
     containerElement.appendChild(article);

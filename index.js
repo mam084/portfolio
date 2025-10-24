@@ -1,29 +1,20 @@
 import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
 
-// same paths but rooted for home
-const CANDIDATES = [
-  './projects.json',       // main fallback
-  './lib/projects.json'
-];
-
 async function loadProjects() {
-  let lastErr = null;
-  for (const base of CANDIDATES) {
-    try {
-      const data = await fetchJSON(`${base}?v=${Date.now()}`);
-      if (Array.isArray(data)) return data;
-    } catch (e) {
-      lastErr = e;
-    }
+  try {
+    const data = await fetchJSON(`./lib/projects.json?v=${Date.now()}`);
+    if (!Array.isArray(data)) throw new Error('Invalid JSON');
+    return data;
+  } catch (err) {
+    console.error('Could not load projects.json', err);
+    throw err;
   }
-  throw lastErr ?? new Error('Could not load projects.json');
 }
 
 async function init() {
   try {
     const projects = await loadProjects();
 
-    // Newest first is already handled inside render; just pick first N
     const latest = projects
       .slice()
       .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
@@ -61,7 +52,6 @@ async function init() {
   }
 }
 
-// ✅ Run init once DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {

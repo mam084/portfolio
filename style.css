@@ -227,8 +227,18 @@ h1, h2, h3, h4, h5, h6 {
 .project-footer {
   margin-top: 0.75rem;
 }
+
+.project-body {
+  margin-top: 0.5rem;
+}
+
+.project-description {
+  margin-bottom: 0.25rem;
+}
+
 .project-links {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  margin-top: 0.25rem;
 }
