@@ -1,9 +1,9 @@
-import { fetchJSON, renderProjects, fetchGitHubData  } from './global.js'; // adjust path if needed
-
+import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
 
 // same paths but rooted for home
 const CANDIDATES = [
-  "./lib/projects.json",
+  './projects.json',       // main fallback
+  './lib/projects.json'
 ];
 
 async function loadProjects() {
@@ -16,27 +16,27 @@ async function loadProjects() {
       lastErr = e;
     }
   }
-  throw lastErr ?? new Error("Could not load projects.json");
+  throw lastErr ?? new Error('Could not load projects.json');
 }
 
-try {
-  const projects = await loadProjects();
+async function init() {
+  try {
+    const projects = await loadProjects();
 
-  // Newest first is already handled inside render; just pick first N
-  const latest = projects
-    .slice() // clone
-    .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
-    .slice(0, 3);
+    // Newest first is already handled inside render; just pick first N
+    const latest = projects
+      .slice()
+      .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
+      .slice(0, 3);
 
-  const container = document.querySelector(".projects");
-  renderProjects(latest, container, "h3");
-} catch (err) {
-  console.error("Failed to load projects on home:", err);
-}
+    const container = document.querySelector('.projects');
+    renderProjects(latest, container, 'h3');
+  } catch (err) {
+    console.error('Failed to load projects on home:', err);
+  }
 
   try {
     const githubData = await fetchGitHubData('mam084');
-
     const profileStats = document.querySelector('#profile-stats');
     if (profileStats) {
       profileStats.innerHTML = `
@@ -59,8 +59,9 @@ try {
       `;
     }
   }
+}
 
-
+// ✅ Run init once DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {

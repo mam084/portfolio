@@ -153,11 +153,14 @@ export function renderProjects(projects, containerElement, headingLevel = "h2") 
       : "";
 
     article.innerHTML = `
-      <${H} class="project-title">${title} ${yearBadge}</${H}>
-      <img class="project-image" src="${img}" alt="${title}" loading="lazy">
-      ${desc ? `<p class="project-description">${desc}</p>` : ""}
+    <${H} class="project-title">${title} ${yearBadge}</${H}>
+    <img class="project-image" src="${img}" alt="${title}" loading="lazy">
+    ${desc ? `<p class="project-description">${desc}</p>` : ''}
+    <div class="project-footer">
       ${linksHTML}
-    `;
+    </div>
+  `;
+
 
     containerElement.appendChild(article);
   }
