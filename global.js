@@ -102,15 +102,16 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     return;
   }
 
-  // validate heading
+  // Validate heading level
   const validHeadings = new Set(['h1','h2','h3','h4','h5','h6']);
   const H = validHeadings.has(String(headingLevel).toLowerCase())
     ? String(headingLevel).toLowerCase()
     : 'h2';
 
-  // Clear previous content
+  // Clear previous content so re-renders don’t duplicate
   containerElement.innerHTML = '';
 
+  // Handle empty arrays
   if (!Array.isArray(projects) || projects.length === 0) {
     const empty = document.createElement('p');
     empty.className = 'projects-empty';
@@ -119,38 +120,19 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     return;
   }
 
-  // Optional: sort newest first when year is present on items
-  const items = [...projects].sort((a, b) => {
-    const ya = Number.isFinite(+a?.year) ? +a.year : -Infinity;
-    const yb = Number.isFinite(+b?.year) ? +b.year : -Infinity;
-    return yb - ya; // newest first; items without year fall to bottom
-  });
-
-  for (const project of items) {
+  // Render each project
+  for (const project of projects) {
     const article = document.createElement('article');
-    article.className = 'project';
 
+    // Fallbacks for missing fields
     const title = project?.title ?? 'Untitled Project';
     const img   = project?.image ?? 'https://via.placeholder.com/600x400?text=No+Image';
-    const desc  = project?.description ?? '';
-    const url   = project?.url ?? null;
-    const repo  = project?.repo ?? null;
-    const year  = project?.year ?? null;
-
-    // Build title block with optional year badge
-    const yearBadge = year ? `<span class="project-year" aria-label="Year">${year}</span>` : '';
-    const linksHTML = `
-      <div class="project-links">
-        ${url ? `<a class="project-link demo" href="${url}" target="_blank" rel="noopener noreferrer">Live</a>` : ''}
-        ${repo ? `<a class="project-link code" href="${repo}" target="_blank" rel="noopener noreferrer">Repo</a>` : ''}
-      </div>
-    `;
+    const desc  = project?.description ?? 'No description provided.';
 
     article.innerHTML = `
-      <${H} class="project-title">${title} ${yearBadge}</${H}>
-      <img class="project-image" src="${img}" alt="${title}" loading="lazy">
-      ${desc ? `<p class="project-description">${desc}</p>` : ''}
-      ${linksHTML}
+      <${H} class="project-title">${title}</${H}>
+      <img class="project-image" src="${img}" alt="${title}">
+      <p class="project-description">${desc}</p>
     `;
 
     containerElement.appendChild(article);
