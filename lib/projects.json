@@ -1,11 +1,11 @@
 [
 	{
-	"title": "Persuasive/Deceptive Visualization",
-	"image": "../images/Energy_Group_Bar.png",
-	"description": "Two opposing visualizations with rationale and ethics reflection.",
-	"url": "https://mam084.github.io/deceptive_visualization/", 
-	"repo": "https://github.com/mam084/deceptive_visualization",
-	"year": 2025
+		"title": "Persuasive/Deceptive Visualization",
+		"image": "../images/Energy_Group_Bar.png",
+		"description": "Two opposing visualizations with rationale and ethics reflection.",
+		"url": "https://mam084.github.io/deceptive_visualization/", 
+		"repo": "https://github.com/mam084/deceptive_visualization",
+		"year": 2025
 	},
 	{
 		"title": "Architecto minima sed omnis?",
@@ -14,8 +14,11 @@
 	},
 	{
 		"title": "Asperiores rem repellendus doloremque.",
-		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Eligendi tenetur quae quos recusandae est. Cumque, voluptatem. Quo nihil dignissimos molestiae explicabo praesentium aspernatur debitis, illo rerum possimus quam ducimus earum nulla officiis maiores itaque repellat corporis soluta labore?"
+		"image": "../images/US_Economic_Indicators_Over_Time.png",
+		"description": "Eligendi tenetur quae quos recusandae est. Cumque, voluptatem. Quo nihil dignissimos molestiae explicabo praesentium aspernatur debitis, illo rerum possimus quam ducimus earum nulla officiis maiores itaque repellat corporis soluta labore?",
+		"url": "https://github.com/mam084/dsc232amazon/blob/main/Amazon_Review_Sentiment_as_a_Predictor_of_Economic_Trends.pdf",
+		"repo": "https://github.com/mam084/dsc232amazon/tree/main",
+		"year": 2025
 	},
 	{
 		"title": "Laudantium reprehenderit placeat perspiciatis.",
