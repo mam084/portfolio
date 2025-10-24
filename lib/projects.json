@@ -13,9 +13,9 @@
 		"description": "Est, reiciendis aspernatur debitis maxime et itaque animi sit quod quo, tempore incidunt tempora dignissimos exercitationem enim numquam quam quaerat optio laborum ut unde hic delectus laboriosam? Quasi, cupiditate corporis."
 	},
 	{
-		"title": "Asperiores rem repellendus doloremque.",
+		"title": "Amazon Review Sentiment as a Predictor of Economic Trends",
 		"image": "../images/US_Economic_Indicators_Over_Time.png",
-		"description": "Eligendi tenetur quae quos recusandae est. Cumque, voluptatem. Quo nihil dignissimos molestiae explicabo praesentium aspernatur debitis, illo rerum possimus quam ducimus earum nulla officiis maiores itaque repellat corporis soluta labore?",
+		"description": "This project investigates whether consumer sentiment expressed in Amazon product reviews can serve as an early indicator of broader economic trends.",
 		"url": "https://github.com/mam084/dsc232amazon/blob/main/Amazon_Review_Sentiment_as_a_Predictor_of_Economic_Trends.pdf",
 		"repo": "https://github.com/mam084/dsc232amazon/tree/main",
 		"year": 2025
@@ -23,46 +23,55 @@
 	{
 		"title": "Laudantium reprehenderit placeat perspiciatis.",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Quo minus perferendis nulla corrupti repellat dolorem dolore assumenda sit minima ducimus quidem ullam, id ipsa dicta tempora laborum officiis unde possimus cumque nobis alias inventore! Ullam repudiandae iusto nam."
+		"description": "Quo minus perferendis nulla corrupti repellat dolorem dolore assumenda sit minima ducimus quidem ullam, id ipsa dicta tempora laborum officiis unde possimus cumque nobis alias inventore! Ullam repudiandae iusto nam.",
+		"year": 2025
 	},
 	{
 		"title": "Consequuntur autem eos facere.",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Laborum alias ea unde harum aspernatur? Molestiae, veritatis, possimus, numquam ex excepturi quod ducimus sit odit optio quibusdam sequi aliquid itaque tempore perspiciatis placeat expedita vero voluptates. Sit, aspernatur sint!"
+		"description": "Laborum alias ea unde harum aspernatur? Molestiae, veritatis, possimus, numquam ex excepturi quod ducimus sit odit optio quibusdam sequi aliquid itaque tempore perspiciatis placeat expedita vero voluptates. Sit, aspernatur sint!",
+		"year": 2024
 	},
 	{
 		"title": "Quos sint quaerat omnis?",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Est neque, velit nam rerum error odio voluptates voluptatem magnam laboriosam ad? Doloribus, id et itaque unde porro totam ullam quaerat blanditiis odit animi eveniet aut, voluptate velit iure odio."
+		"description": "Est neque, velit nam rerum error odio voluptates voluptatem magnam laboriosam ad? Doloribus, id et itaque unde porro totam ullam quaerat blanditiis odit animi eveniet aut, voluptate velit iure odio.",
+		"year": 2024
 	},
 	{
 		"title": "Iste ipsam magni fuga!",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Velit omnis suscipit nemo quia? Iste maiores numquam labore quia nemo eveniet odit, modi magnam? Architecto officia sint est. Architecto iste minima consequuntur explicabo illo error sed at dolore nostrum!"
+		"description": "Velit omnis suscipit nemo quia? Iste maiores numquam labore quia nemo eveniet odit, modi magnam? Architecto officia sint est. Architecto iste minima consequuntur explicabo illo error sed at dolore nostrum!",
+		"year": 2024
 	},
 	{
 		"title": "Ipsum, aperiam magni? Nobis.",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Delectus magni, vel, quod mollitia hic rem temporibus, sint doloribus tenetur qui dolores tempore quisquam fuga nobis recusandae molestiae ipsum nostrum maxime eaque dicta aperiam eum quas beatae. At, neque."
+		"description": "Delectus magni, vel, quod mollitia hic rem temporibus, sint doloribus tenetur qui dolores tempore quisquam fuga nobis recusandae molestiae ipsum nostrum maxime eaque dicta aperiam eum quas beatae. At, neque.",
+		"year": 2024
 	},
 	{
 		"title": "Dicta nihil odit illo?",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Vitae quos laudantium officiis rerum, accusamus delectus aspernatur quas nulla, magni sed, excepturi saepe incidunt laboriosam alias at aliquam atque quisquam autem nesciunt. Minus, reprehenderit odit nam illo natus aspernatur?"
+		"description": "Vitae quos laudantium officiis rerum, accusamus delectus aspernatur quas nulla, magni sed, excepturi saepe incidunt laboriosam alias at aliquam atque quisquam autem nesciunt. Minus, reprehenderit odit nam illo natus aspernatur?",
+		"year": 2023
 	},
 	{
 		"title": "Vel earum nulla facilis.",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Aut voluptatem sint atque corrupti accusamus necessitatibus possimus et, itaque nulla id deleniti nemo repellendus asperiores molestias laudantium, mollitia ad dicta. Laboriosam, itaque. Quos corporis, perferendis natus officiis beatae qui."
+		"description": "Aut voluptatem sint atque corrupti accusamus necessitatibus possimus et, itaque nulla id deleniti nemo repellendus asperiores molestias laudantium, mollitia ad dicta. Laboriosam, itaque. Quos corporis, perferendis natus officiis beatae qui.",
+		"year": 2023
 	},
 	{
 		"title": "Nobis iste neque quaerat.",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Quos, recusandae, sit rerum velit nostrum nihil quisquam tempora repellat sed quibusdam facilis. Assumenda quaerat ab, nesciunt odio facere sit, ipsa necessitatibus tempora, maiores commodi sed quae provident deserunt at?"
+		"description": "Quos, recusandae, sit rerum velit nostrum nihil quisquam tempora repellat sed quibusdam facilis. Assumenda quaerat ab, nesciunt odio facere sit, ipsa necessitatibus tempora, maiores commodi sed quae provident deserunt at?",
+		"year": 2023
 	},
 	{
 		"title": "Iusto, incidunt. Totam, illum.",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Tempore, eveniet minus velit, earum aperiam necessitatibus repellendus provident accusamus illum officiis doloribus, eum saepe est aut numquam distinctio pariatur natus totam repellat. Numquam nulla libero sapiente magnam nostrum ex."
+		"description": "Tempore, eveniet minus velit, earum aperiam necessitatibus repellendus provident accusamus illum officiis doloribus, eum saepe est aut numquam distinctio pariatur natus totam repellat. Numquam nulla libero sapiente magnam nostrum ex.",
+		"year": 2022
 	}
 ]
