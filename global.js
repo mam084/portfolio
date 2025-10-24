@@ -165,3 +165,9 @@ export function renderProjects(projects, containerElement, headingLevel = "h2") 
     containerElement.appendChild(article);
   }
 }
+
+export async function fetchGitHubData(username) {
+  if (!username) throw new Error('fetchGitHubData: username is required');
+  // Uses your existing fetchJSON helper
+  return fetchJSON(`https://api.github.com/users/${encodeURIComponent(username)}`);
+}
