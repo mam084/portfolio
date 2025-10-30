@@ -76,8 +76,6 @@ mql.addEventListener?.("change", () => {
   }
 });
 
-e// global.js (module)
-
 export async function fetchJSON(url) {
   const res = await fetch(url, { cache: "no-store" }); // avoid stale JSON
   if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);

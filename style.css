@@ -242,3 +242,86 @@ h1, h2, h3, h4, h5, h6 {
   flex-wrap: wrap;
   margin-top: 0.25rem;
 }
+/* ===== Projects pie chart & legend ===== */
+.projects-pie-container {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-block: 1rem 1.5rem;
+}
+
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 0.5em;
+  overflow: visible; /* ensure hovers aren't clipped */
+}
+
+/* Smooth hover transitions and clickability */
+#projects-pie-plot path {
+  transition: 300ms;
+  cursor: pointer;
+}
+
+/* When any slice is hovered, fade the rest a bit (but only if a slice is actually hovered) */
+#projects-pie-plot:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+/* Legend layout */
+.legend {
+  --legend-gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 1rem var(--legend-gap);
+  padding: 0.75rem;
+  border: 1px solid oklch(50% 10% 200 / 40%);
+  border-radius: 0.5rem;
+  margin: 0;               /* reset default ul margins */
+  list-style: none;        /* remove bullets */
+  flex: 1;                 /* let legend use remaining width */
+}
+
+.legend .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;             /* must be smaller than grid gap (proximity) */
+  min-width: 0;            /* avoid overflow */
+  cursor: pointer;
+}
+
+.legend .legend-item .swatch {
+  display: inline-block; 
+  width: 0.9em;
+  height: 0.9em;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.2em;    /* slight rounding; use 50% for a circle */
+  background: var(--color);
+  flex: 0 0 auto;          /* fixed size */
+}
+
+.legend .legend-item em {
+  opacity: 0.8;
+  font-style: normal; /* visually cleaner, still semantically present */
+}
+
+/* Selected state (both slice and legend item) */
+.selected {
+  --color: oklch(60% 45% 0) !important; /* force override of inline style var */
+
+  /* If it's a path, update fill; otherwise legend items pick up --color via swatch */
+  &:is(path) {
+    fill: var(--color);
+  }
+}
+
+/* Optional: compact the search field a bit */
+.searchBar {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 1rem 0;
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  border: 1px solid oklch(50% 10% 200 / 40%);
+  border-radius: 0.5rem;
+}
