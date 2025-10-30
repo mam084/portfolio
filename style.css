@@ -306,13 +306,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Selected state (both slice and legend item) */
 .selected {
-  --color: oklch(60% 45% 0) !important; /* force override of inline style var */
-
-  /* If it's a path, update fill; otherwise legend items pick up --color via swatch */
-  &:is(path) {
-    fill: var(--color);
-  }
+  --color: oklch(60% 45% 0) !important;
 }
+.selected:is(path) {
+  fill: var(--color);
+}
+
 
 /* Optional: compact the search field a bit */
 .searchBar {
