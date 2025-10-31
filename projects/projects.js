@@ -113,7 +113,7 @@ function matchesQuery(project) {
 
 function matchesSelectedYear(project, textFiltered) {
   if (state.selectedIndex === -1) return true;
-  const data = toYearCounts(textFiltered); // year buckets from the query-only set
+  const data = toYearCounts(state.all); // year buckets from the query-only set
   const label = data[state.selectedIndex]?.label;
   return label ? String(project.year) === label : true;
 }
@@ -178,7 +178,7 @@ function applyFiltersAndRerender() {
   renderList(combined, projectsContainer, 'h2');
 
   // Render pie with query-only base; selection only colors wedge
-  renderPieChart(byText);
+  renderPieChart(state.all);
 }
 
 /* =======================================================
