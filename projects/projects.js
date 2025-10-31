@@ -1,9 +1,9 @@
 import { fetchJSON, renderProjects as importedRenderProjects } from '../global.js';
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
-// ----------------------------------------
-// Data loading (single path, shared)
-// ----------------------------------------
+/* =======================================================
+   Data loading (single loader, shared across the page)
+   ======================================================= */
 const CANDIDATES = [
   './projects.json',
   '../projects.json',
@@ -16,7 +16,7 @@ async function loadProjects() {
   let lastErr = null;
   for (const base of CANDIDATES) {
     try {
-      // cache-buster avoids stale CDN/browser cache
+      // cache-buster avoids stale CDN/browser caches
       const data = await fetchJSON(`${base}?v=${Date.now()}`);
       if (Array.isArray(data)) return data;
     } catch (e) {
@@ -26,7 +26,9 @@ async function loadProjects() {
   throw lastErr ?? new Error('Could not load projects.json');
 }
 
-// Provide a fallback renderer only if nothing exists
+/* =======================================================
+   Renderer (use global if present; otherwise fallback)
+   ======================================================= */
 if (typeof window.renderProjects !== 'function') {
   window.renderProjects = (list, container = document.querySelector('.projects')) => {
     const root = container ?? document.querySelector('.projects');
@@ -76,13 +78,11 @@ if (typeof window.renderProjects !== 'function') {
     }
   };
 }
-
-// Choose a single renderer we’ll use everywhere
 const renderList = window.renderProjects ?? importedRenderProjects;
 
-// ----------------------------------------
-// D3 helpers (pure; DOM selected later)
-// ----------------------------------------
+/* =======================================================
+   D3 helpers
+   ======================================================= */
 const colors = d3.scaleOrdinal(d3.schemeTableau10);
 const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
 const sliceGenerator = d3.pie().value(d => d.value).sort(null);
@@ -93,18 +93,18 @@ function toYearCounts(list) {
   return rolled.map(([year, count]) => ({ label: String(year), value: count }));
 }
 
-// ----------------------------------------
-// App state
-// ----------------------------------------
+/* =======================================================
+   App state
+   ======================================================= */
 const state = {
   all: [],
   query: '',
   selectedIndex: -1
 };
 
-// ----------------------------------------
-// Filtering + rendering
-// ----------------------------------------
+/* =======================================================
+   Filtering + rendering
+   ======================================================= */
 function matchesQuery(project) {
   if (!state.query) return true;
   const hay = Object.values(project).join('\n').toLowerCase();
@@ -113,13 +113,16 @@ function matchesQuery(project) {
 
 function matchesSelectedYear(project, textFiltered) {
   if (state.selectedIndex === -1) return true;
-  const data = toYearCounts(textFiltered);
+  const data = toYearCounts(textFiltered); // year buckets from the query-only set
   const label = data[state.selectedIndex]?.label;
   return label ? String(project.year) === label : true;
 }
 
-function renderPieChart(list) {
-  // Select AFTER DOM is ready
+/**
+ * Draw the pie/legend based on a *base list* (usually the query-only set).
+ * Selection only changes styling and filtering of cards — not the pie shape.
+ */
+function renderPieChart(baseListForPie) {
   const svg = d3.select('#projects-pie-plot');
   const legendUL = d3.select('.legend');
 
@@ -127,12 +130,12 @@ function renderPieChart(list) {
   svg.selectAll('*').remove();
   legendUL.selectAll('*').remove();
 
-  const data = toYearCounts(list);
+  const data = toYearCounts(baseListForPie);
   if (!data.length) return;
 
   const arcData = sliceGenerator(data);
 
-  // slices
+  // slices (use selection only to toggle .selected class)
   arcData.forEach((d, i) => {
     svg.append('path')
       .attr('d', arcGenerator(d))
@@ -144,7 +147,7 @@ function renderPieChart(list) {
       });
   });
 
-  // legend
+  // legend (same indexing as slices)
   data.forEach((d, i) => {
     legendUL.append('li')
       .attr('class', `legend-item${i === state.selectedIndex ? ' selected' : ''}`)
@@ -157,28 +160,40 @@ function renderPieChart(list) {
   });
 }
 
+/**
+ * Combine filters, then render:
+ * - Cards: filtered by query + selected year
+ * - Pie:   based on query-only set (so wedges don't disappear)
+ */
 function applyFiltersAndRerender() {
-  const projectsContainer = document.querySelector('.projects'); // select fresh (safe)
+  const projectsContainer = document.querySelector('.projects');
+
+  // 1) filter by query (pie base)
   const byText = state.all.filter(matchesQuery);
+
+  // 2) filter cards by selected year *within* query result
   const combined = byText.filter(p => matchesSelectedYear(p, byText));
 
+  // Render cards with both filters
   renderList(combined, projectsContainer, 'h2');
-  renderPieChart(combined);
+
+  // Render pie with query-only base; selection only colors wedge
+  renderPieChart(byText);
 }
 
-// ----------------------------------------
-// Boot (single init; no top-level rendering)
-// ----------------------------------------
+/* =======================================================
+   Boot
+   ======================================================= */
 window.addEventListener('DOMContentLoaded', async () => {
   try {
     state.all = await loadProjects();
-    // Share globally for any other scripts that expect window.projects
+    // Share globally for any other scripts expecting window.projects
     window.projects = state.all;
 
     const container = document.querySelector('.projects');
     renderList(state.all, container, 'h2');
 
-    // Optional title count
+    // Optional: update title count
     const titleEl = document.querySelector('.projects-title');
     if (titleEl) {
       const base = titleEl.dataset.baseTitle || titleEl.textContent.trim() || 'Projects';
@@ -186,10 +201,10 @@ window.addEventListener('DOMContentLoaded', async () => {
       titleEl.textContent = `${base} (${state.all.length})`;
     }
 
-    // First chart render
+    // Initial pie render uses full set (no query yet)
     renderPieChart(state.all);
 
-    // Search binding (select inside DOMContentLoaded so it exists)
+    // Search handler (live)
     const searchInput = document.querySelector('.searchBar');
     if (searchInput && !searchInput.__hasPieListener) {
       searchInput.addEventListener('input', (e) => {
