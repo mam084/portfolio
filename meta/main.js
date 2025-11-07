@@ -4,18 +4,17 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
    Step 1.1: Load and parse the CSV (with row conversion)
    ======================================================= */
 export async function loadData() {
-  const data = await d3.csv('loc.csv?v=' + Date.now(), (row) => ({
+  const data = await d3.csv('loc.csv', (row) => ({
     ...row,
     line: Number(row.line),
     depth: Number(row.depth),
     length: Number(row.length),
-    // Expecting ISO-like date in row.date and an RFC offset in row.timezone (e.g. "-07:00")
-    date: new Date(`${row.date}T00:00${row.timezone ?? ''}`),
+    date: new Date(row.date + 'T00:00' + row.timezone),
     datetime: new Date(row.datetime),
   }));
-
   return data;
 }
+
 
 /* =======================================================
    Step 1.2: Compute commit-level data from denormalized rows
