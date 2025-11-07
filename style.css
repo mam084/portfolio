@@ -358,3 +358,120 @@ abbr[title] {
     opacity: 0.9;
   }
 }
+
+
+/* ===== Scatterplot & tooltip styles ===== */
+.gridlines .tick line {
+  stroke: currentColor;
+  opacity: 0.15;
+}
+
+.dots circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.dots circle:hover {
+  transform: scale(1.5);
+}
+
+/* Generic description list for info blocks */
+dl.info {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  backdrop-filter: blur(6px);
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+  color: inherit;
+}
+
+dl.info dt {
+  font-weight: 600;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+dl.info dd { margin: 0; }
+
+/* Tooltip position & visibility */
+.tooltip {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  z-index: 10;
+}
+
+dl.info[hidden]:not(:hover, :focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  dl.info {
+    background: rgba(28,28,30,0.9);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  }
+  .gridlines .tick line { opacity: 0.25; }
+}
+
+
+/* ===== Scatterplot gridlines ===== */
+.gridlines line {
+  stroke: currentColor;
+  opacity: 0.15;
+}
+
+/* ===== Info definition lists (reusable) ===== */
+dl.info {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+  color: inherit;
+}
+
+dl.info dt {
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+dl.info dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tooltip placement */
+.tooltip {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  z-index: 1000;
+  backdrop-filter: saturate(120%) blur(2px);
+}
+
+dl.info[hidden]:not(:hover, :focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Hover affordance for dots */
+circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+circle:hover {
+  transform: scale(1.5);
+}

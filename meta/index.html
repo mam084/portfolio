@@ -14,6 +14,28 @@
   <!-- Placeholder for stats -->
   <div id="stats"></div>
 
+  <h2>Commits by time of day</h2>
+  <div id="chart"></div>
+
+  <dl id="commit-tooltip" class="info tooltip" hidden>
+    <dt>Commit</dt>
+    <dd>
+      <a href="" id="commit-link" target="_blank" rel="noopener noreferrer"></a>
+    </dd>
+
+    <dt>Date</dt>
+    <dd id="commit-date"></dd>
+
+    <dt>Time</dt>
+    <dd id="commit-time"></dd>
+
+    <dt>Author</dt>
+    <dd id="commit-author"></dd>
+
+    <dt>Lines Edited</dt>
+    <dd id="commit-lines"></dd>
+  </dl>
+
   <!-- Main logic -->
   <script type="module" src="./main.js"></script>
 </body>
