@@ -29,7 +29,7 @@ export function processCommits(data) {
 
       const ret = {
         id: commit,
-        url: 'https://github.com/mam084/portfolio/' + commit,
+        url: 'https://github.com/mam084/portfolio/commit/' + commit,
         author,
         date,
         time,
@@ -215,14 +215,25 @@ export function renderScatterPlot(data, commits) {
   // Dots
   const dots = svg.append('g').attr('class', 'dots');
 
+  // Step 4.1/4.2: radius scale by total lines (sqrt for area-correct sizing)
+  let [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+  if (minLines == null || maxLines == null) { minLines = 0; maxLines = 1; }
+  if (minLines === maxLines) { minLines = 0; }
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
+
+  // Step 4.3: sort so large dots render first, smaller dots remain hoverable on top
+  const sortedCommits = d3.sort(commits, (d) => -(d.totalLines ?? 0));
+
   dots.selectAll('circle')
-    .data(commits)
+    .data(sortedCommits)
     .join('circle')
     .attr('cx', (d) => xScale(d.datetime))
     .attr('cy', (d) => yScale(d.hourFrac))
-    .attr('r', 5)
+    .attr('r', (d) => rScale(d.totalLines))
     .attr('fill', 'steelblue')
+    .style('fill-opacity', 0.7)
     .on('mouseenter', (event, commit) => {
+      d3.select(event.currentTarget).style('fill-opacity', 1);
       renderTooltipContent(commit);
       updateTooltipVisibility(true);
       updateTooltipPosition(event);
@@ -230,8 +241,10 @@ export function renderScatterPlot(data, commits) {
     .on('mousemove', (event) => {
       updateTooltipPosition(event);
     })
-    .on('mouseleave', () => {
+    .on('mouseleave', (event) => {
+      d3.select(event.currentTarget).style('fill-opacity', 0.7);
       updateTooltipVisibility(false);
+    });
     });
 }
 
