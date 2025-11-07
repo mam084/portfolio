@@ -156,6 +156,7 @@ function updateTooltipPosition(event) {
   tooltip.style.top = `${event.clientY + OFFSET}px`;
 }
 
+
 export function renderScatterPlot(data, commits) {
   // Dimensions
   const width = 1000;
@@ -178,9 +179,6 @@ export function renderScatterPlot(data, commits) {
   const yScale = d3.scaleLinear()
     .domain([0, 24])
     .range([height, 0]);
-
-  console.debug('xScale domain', xScale.domain());
-  console.debug('yScale domain', yScale.domain());
 
   // Usable area (account for margins)
   const usableArea = {
@@ -214,20 +212,88 @@ export function renderScatterPlot(data, commits) {
   svg.append('g')
     .attr('transform', `translate(${usableArea.left}, 0)`)
     .call(yAxis);
-  // Dots
+
+  // Container for dots
   const dots = svg.append('g').attr('class', 'dots');
 
-  // Create brush (Step 5.1)
+  // Brush
   function brushed(event) {
     const selection = event.selection;
-    // Toggle selected class on dots
     svg.selectAll('circle')
       .classed('selected', (d) => isCommitSelected(selection, d, xScale, yScale));
 
-    // Update side readouts
     renderSelectionCount(selection, commits, xScale, yScale);
     renderLanguageBreakdown(selection, commits, xScale, yScale);
   }
+
+  svg.call(d3.brush().on('start brush end', brushed));
+
+  // Ensure tooltips still work
+  svg.selectAll('.dots, .overlay ~ *').raise();
+
+  // Radius scale by lines (sqrt for area-correct sizing)
+  let [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+  if (minLines == null || maxLines == null) { minLines = 0; maxLines = 1; }
+  if (minLines === maxLines) { minLines = 0; }
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([3, 24]);
+  console.debug('rScale extent', { minLines, maxLines });
+
+  // Size legend (min/median/max)
+  const legend = svg.append('g').attr('class', 'size-legend');
+  const legendValues = [minLines, (minLines + maxLines) / 2, maxLines].filter(v => isFinite(v));
+  const legendX = usableArea.right - 140;
+  const legendY = usableArea.top + 10;
+  legend.selectAll('g')
+    .data(legendValues)
+    .join('g')
+      .attr('transform', (d,i) => `translate(${legendX}, ${legendY + i*40})`)
+      .each(function(d){
+        const g = d3.select(this);
+        g.append('circle')
+          .attr('r', rScale(d))
+          .attr('cx', 0)
+          .attr('cy', 0)
+          .attr('fill', 'steelblue')
+          .style('fill-opacity', 0.3)
+          .attr('stroke', 'currentColor')
+          .attr('stroke-width', 1);
+        g.append('text')
+          .attr('x', 18)
+          .attr('y', 4)
+          .text(d3.format(',')(Math.round(d)))
+          .attr('font-size', 12);
+      });
+
+  // Render dots (largest first so small dots stay hoverable on top)
+  const sortedCommits = d3.sort(commits, (d) => -(d.totalLines ?? 0));
+
+  dots.selectAll('circle')
+    .data(sortedCommits)
+    .join('circle')
+    .attr('cx', (d) => xScale(d.datetime))
+    .attr('cy', (d) => yScale(d.hourFrac))
+    .attr('r', (d) => rScale(d.totalLines))
+    .attr('fill', 'steelblue')
+    .attr('stroke', 'currentColor')
+    .attr('stroke-width', 0.5)
+    .style('fill-opacity', 0.7)
+    .on('mouseenter', (event, commit) => {
+      d3.select(event.currentTarget).style('fill-opacity', 1);
+      renderTooltipContent(commit);
+      updateTooltipVisibility(true);
+      updateTooltipPosition(event);
+    })
+    .on('mousemove', (event) => {
+      updateTooltipPosition(event);
+    })
+    .on('mouseleave', (event) => {
+      d3.select(event.currentTarget).style('fill-opacity', 0.7);
+      updateTooltipVisibility(false);
+    });
+
+  // Keep dots above brush overlay
+  dots.raise();
+}
 
   svg.call(d3.brush().on('start brush end', brushed));
 
@@ -297,8 +363,7 @@ export function renderScatterPlot(data, commits) {
 
   // Ensure dots sit above brush overlay for hover
   d3.select('.dots').raise();
-    });
-}
+
 
 
 /* ===== Brushing helpers (Step 5) ===== */
@@ -365,3 +430,8 @@ function renderLanguageBreakdown(selection, commits, xScale, yScale) {
   renderCommitInfo(data, commits);
   renderScatterPlot(data, commits);
 })();
+// Surface runtime errors to the page for easier debugging
+window.addEventListener('error', (e) => {
+  const el = document.getElementById('error-log');
+  if (el) el.textContent = String(e.error || e.message || e);
+});
