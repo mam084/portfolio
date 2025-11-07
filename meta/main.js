@@ -4,7 +4,7 @@ import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
    Step 1.1: Load and parse the CSV (with row conversion)
    ======================================================= */
 export async function loadData() {
-  const data = await d3.csv('loc.csv', (row) => ({
+  const data = await d3.csv('loc.csv?v=' + Date.now(), (row) => ({
     ...row,
     line: Number(row.line),
     depth: Number(row.depth),
@@ -29,7 +29,7 @@ export function processCommits(data) {
 
       const ret = {
         id: commit,
-        url: 'https://github.com/mam084/portfolio/commit/' + commit,
+        url: 'https://github.com/mam084/portfolio/',
         author,
         date,
         time,
@@ -214,33 +214,6 @@ export function renderScatterPlot(data, commits) {
   svg.append('g')
     .attr('transform', `translate(${usableArea.left}, 0)`)
     .call(yAxis);
-
-  // Size legend (min/median/max)
-  const legend = svg.append('g').attr('class', 'size-legend');
-  const legendValues = [minLines, (minLines + maxLines) / 2, maxLines].filter(v => isFinite(v));
-  const legendX = usableArea.right - 140;
-  const legendY = usableArea.top + 10;
-  legend.selectAll('g')
-    .data(legendValues)
-    .join('g')
-      .attr('transform', (d,i) => `translate(${legendX}, ${legendY + i*40})`)
-      .each(function(d){
-        const g = d3.select(this);
-        g.append('circle')
-          .attr('r', rScale(d))
-          .attr('cx', 0)
-          .attr('cy', 0)
-          .attr('fill', 'steelblue')
-          .style('fill-opacity', 0.3)
-          .attr('stroke', 'currentColor')
-          .attr('stroke-width', 1);
-        g.append('text')
-          .attr('x', 18)
-          .attr('y', 4)
-          .text(d3.format(',')(Math.round(d)))
-          .attr('font-size', 12);
-      });
-
   // Dots
   const dots = svg.append('g').attr('class', 'dots');
 
@@ -267,6 +240,33 @@ export function renderScatterPlot(data, commits) {
   if (minLines == null || maxLines == null) { minLines = 0; maxLines = 1; }
   if (minLines === maxLines) { minLines = 0; }
   const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([3, 24]);
+
+  // Size legend (min/median/max) - placed AFTER rScale is defined
+  const legend = svg.append('g').attr('class', 'size-legend');
+  const legendValues = [minLines, (minLines + maxLines) / 2, maxLines].filter(v => isFinite(v));
+  const legendX = usableArea.right - 140;
+  const legendY = usableArea.top + 10;
+  legend.selectAll('g')
+    .data(legendValues)
+    .join('g')
+      .attr('transform', (d,i) => `translate(${legendX}, ${legendY + i*40})`)
+      .each(function(d){
+        const g = d3.select(this);
+        g.append('circle')
+          .attr('r', rScale(d))
+          .attr('cx', 0)
+          .attr('cy', 0)
+          .attr('fill', 'steelblue')
+          .style('fill-opacity', 0.3)
+          .attr('stroke', 'currentColor')
+          .attr('stroke-width', 1);
+        g.append('text')
+          .attr('x', 18)
+          .attr('y', 4)
+          .text(d3.format(',')(Math.round(d)))
+          .attr('font-size', 12);
+      });
+
 
   // Step 4.3: sort so large dots render first, smaller dots remain hoverable on top
   const sortedCommits = d3.sort(commits, (d) => -(d.totalLines ?? 0));
@@ -297,8 +297,8 @@ export function renderScatterPlot(data, commits) {
 
   // Ensure dots sit above brush overlay for hover
   d3.select('.dots').raise();
-    };
-
+    });
+}
 
 
 /* ===== Brushing helpers (Step 5) ===== */
