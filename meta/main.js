@@ -29,7 +29,7 @@ export function processCommits(data) {
 
       const ret = {
         id: commit,
-        url: 'https://github.com/mam084/portfolio/',
+        url: 'https://github.com/mam084/portfolio/commit/' + commit,
         author,
         date,
         time,
@@ -179,6 +179,9 @@ export function renderScatterPlot(data, commits) {
     .domain([0, 24])
     .range([height, 0]);
 
+  console.debug('xScale domain', xScale.domain());
+  console.debug('yScale domain', yScale.domain());
+
   // Usable area (account for margins)
   const usableArea = {
     top: margin.top,
@@ -291,7 +294,11 @@ export function renderScatterPlot(data, commits) {
       d3.select(event.currentTarget).style('fill-opacity', 0.7);
       updateTooltipVisibility(false);
     });
-}
+
+  // Ensure dots sit above brush overlay for hover
+  d3.select('.dots').raise();
+    };
+
 
 
 /* ===== Brushing helpers (Step 5) ===== */
@@ -351,6 +358,10 @@ function renderLanguageBreakdown(selection, commits, xScale, yScale) {
 (async function init() {
   const data = await loadData();
   const commits = processCommits(data);
+  console.debug('commits length', commits.length);
+  if (commits.length) {
+    console.debug('first commit sample', commits[0]);
+  }
   renderCommitInfo(data, commits);
   renderScatterPlot(data, commits);
 })();
