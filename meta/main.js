@@ -1,0 +1,135 @@
+import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+
+/* =======================================================
+   Step 1.1: Load and parse the CSV (with row conversion)
+   ======================================================= */
+export async function loadData() {
+  const data = await d3.csv('loc.csv', (row) => ({
+    ...row,
+    line: Number(row.line),
+    depth: Number(row.depth),
+    length: Number(row.length),
+    // Expecting ISO-like date in row.date and an RFC offset in row.timezone (e.g. "-07:00")
+    date: new Date(`${row.date}T00:00${row.timezone ?? ''}`),
+    datetime: new Date(row.datetime),
+  }));
+
+  return data;
+}
+
+/* =======================================================
+   Step 1.2: Compute commit-level data from denormalized rows
+   ======================================================= */
+export function processCommits(data) {
+  return d3
+    .groups(data, (d) => d.commit)
+    .map(([commit, lines]) => {
+      const first = lines[0] ?? {};
+      const { author, date, time, timezone, datetime } = first;
+
+      const ret = {
+        id: commit,
+        url: 'https://github.com/vis-society/lab-7/commit/' + commit,
+        author,
+        date,
+        time,
+        timezone,
+        datetime,
+        hourFrac: datetime ? (datetime.getHours() + datetime.getMinutes() / 60) : NaN,
+        totalLines: lines.length,
+      };
+
+      // Keep original line rows but don't clutter console/object previews
+      Object.defineProperty(ret, 'lines', {
+        value: lines,
+        enumerable: false,   // hidden in for...in / Object.keys
+        writable: false,
+        configurable: false,
+      });
+
+      return ret;
+    });
+}
+
+/* =======================================================
+   Helpers for stats rendering
+   ======================================================= */
+function addStat(dl, termHTML, valueText) {
+  dl.append('dt').html(termHTML);
+  dl.append('dd').text(valueText);
+}
+
+function classifyDayPeriod(d) {
+  // Morning [5,12), Afternoon [12,17), Evening [17,21), Night otherwise
+  const hr = new Date(d.datetime).getHours();
+  if (hr >= 5 && hr < 12) return 'morning';
+  if (hr >= 12 && hr < 17) return 'afternoon';
+  if (hr >= 17 && hr < 21) return 'evening';
+  return 'night';
+}
+
+/* =======================================================
+   Step 1.3: Render high-level stats
+   ======================================================= */
+export function renderCommitInfo(data, commits) {
+  const dl = d3.select('#stats').append('dl').attr('class', 'stats');
+
+  // Required totals
+  addStat(dl, 'Total <abbr title="Lines of code">LOC</abbr>', d3.format(',')(data.length));
+  addStat(dl, 'Total commits', d3.format(',')(commits.length));
+
+  // Number of files (distinct file names)
+  const fileCount = d3.groups(data, (d) => d.file).length;
+  addStat(dl, 'Files', d3.format(',')(fileCount));
+
+  // Maximum file length (max line index per file)
+  const fileMaxLines = d3.rollups(
+    data,
+    (v) => d3.max(v, (row) => row.line),
+    (d) => d.file
+  );
+  const longestFile = d3.greatest(fileMaxLines, (d) => d[1]);
+  const maxFileLen = longestFile?.[1] ?? 0;
+  const longestFileName = longestFile?.[0] ?? '(unknown)';
+  addStat(dl, 'Max file length (lines)', String(maxFileLen));
+  addStat(dl, 'Longest file', longestFileName);
+
+  // Average file length (mean of per-file max lines)
+  const avgFileLen = d3.mean(fileMaxLines, (d) => d[1]) ?? 0;
+  addStat(dl, 'Avg file length (lines)', d3.format('.2f')(avgFileLen));
+
+  // Depth stats
+  const maxDepth = d3.max(data, (d) => d.depth) ?? 0;
+  const avgDepth = d3.mean(data, (d) => d.depth) ?? 0;
+  addStat(dl, 'Max depth', String(maxDepth));
+  addStat(dl, 'Avg depth', d3.format('.2f')(avgDepth));
+
+  // Time-of-day bucket with most work (by lines)
+  const workByPeriod = d3.rollups(
+    data,
+    (v) => v.length,
+    (d) => classifyDayPeriod(d)
+  );
+  const busiestPeriod = d3.greatest(workByPeriod, (d) => d[1])?.[0] ?? '(n/a)';
+  addStat(dl, 'Busiest period', busiestPeriod);
+
+  // Day-of-week with most work (0=Sunday...6=Saturday)
+  const workByDOW = d3.rollups(
+    data,
+    (v) => v.length,
+    (d) => new Date(d.datetime).getDay()
+  );
+  const busiestDOWIdx = d3.greatest(workByDOW, (d) => d[1])?.[0];
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const busiestDOW = (busiestDOWIdx == null) ? '(n/a)' : dayNames[busiestDOWIdx];
+  addStat(dl, 'Busiest weekday', busiestDOW);
+}
+
+/* =======================================================
+   Boot
+   ======================================================= */
+(async function init() {
+  const data = await loadData();
+  const commits = processCommits(data);
+  renderCommitInfo(data, commits);
+})();
