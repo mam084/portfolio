@@ -29,7 +29,7 @@ export function processCommits(data) {
 
       const ret = {
         id: commit,
-        url: 'https://github.com/mam084/portfolio/commit/' + commit,
+        url: 'https://github.com/mam084/portfolio/',
         author,
         date,
         time,
