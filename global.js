@@ -8,6 +8,7 @@ const pages = [
   { url: "https://mam084.github.io/portfolio/",          title: "Home" },
   { url: "https://mam084.github.io/portfolio/projects/", title: "Projects" },
   { url: "https://mam084.github.io/portfolio/CV/",       title: "Resume" },
+  { url: "https://mam084.github.io/portfolio/meta/",  title: "Meta" },
   { url: "https://mam084.github.io/portfolio/contact/",  title: "Contact" },
   { url: "https://github.com/mam084/", title: "GitHub Profile" }, // external
 ];
