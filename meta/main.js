@@ -15,7 +15,6 @@ export async function loadData() {
   return data;
 }
 
-
 /* =======================================================
    Step 1.2: Compute commit-level data from denormalized rows
    ======================================================= */
@@ -28,6 +27,7 @@ export function processCommits(data) {
 
       const ret = {
         id: commit,
+        // Point to repo root (your SHAs are from a template dataset)
         url: 'https://github.com/mam084/portfolio/',
         author,
         date,
@@ -38,10 +38,9 @@ export function processCommits(data) {
         totalLines: lines.length,
       };
 
-      // Keep original line rows but don't clutter console/object previews
       Object.defineProperty(ret, 'lines', {
         value: lines,
-        enumerable: false,   // hidden in for...in / Object.keys
+        enumerable: false,
         writable: false,
         configurable: false,
       });
@@ -59,7 +58,6 @@ function addStat(dl, termHTML, valueText) {
 }
 
 function classifyDayPeriod(d) {
-  // Morning [5,12), Afternoon [12,17), Evening [17,21), Night otherwise
   const hr = new Date(d.datetime).getHours();
   if (hr >= 5 && hr < 12) return 'morning';
   if (hr >= 12 && hr < 17) return 'afternoon';
@@ -70,15 +68,12 @@ function classifyDayPeriod(d) {
 export function renderCommitInfo(data, commits) {
   const dl = d3.select('#stats').append('dl').attr('class', 'stats');
 
-  // Required totals
   addStat(dl, 'Total <abbr title="Lines of code">LOC</abbr>', d3.format(',')(data.length));
   addStat(dl, 'Total commits', d3.format(',')(commits.length));
 
-  // Number of files (distinct file names)
   const fileCount = d3.groups(data, (d) => d.file).length;
   addStat(dl, 'Files', d3.format(',')(fileCount));
 
-  // Maximum file length (max line index per file)
   const fileMaxLines = d3.rollups(
     data,
     (v) => d3.max(v, (row) => row.line),
@@ -90,30 +85,20 @@ export function renderCommitInfo(data, commits) {
   addStat(dl, 'Max file length (lines)', String(maxFileLen));
   addStat(dl, 'Longest file', longestFileName);
 
-  // Average file length (mean of per-file max lines)
   const avgFileLen = d3.mean(fileMaxLines, (d) => d[1]) ?? 0;
   addStat(dl, 'Avg file length (lines)', d3.format('.2f')(avgFileLen));
 
-  // Depth stats
   const maxDepth = d3.max(data, (d) => d.depth) ?? 0;
   const avgDepth = d3.mean(data, (d) => d.depth) ?? 0;
   addStat(dl, 'Max depth', String(maxDepth));
   addStat(dl, 'Avg depth', d3.format('.2f')(avgDepth));
 
-  // Time-of-day bucket with most work (by lines)
-  const workByPeriod = d3.rollups(
-    data,
-    (v) => v.length,
-    (d) => classifyDayPeriod(d)
-  );
+  const workByPeriod = d3.rollups(data, (v) => v.length, (d) => classifyDayPeriod(d));
   const busiestPeriod = d3.greatest(workByPeriod, (d) => d[1])?.[0] ?? '(n/a)';
   addStat(dl, 'Busiest period', busiestPeriod);
 
-  // Day-of-week with most work (0=Sunday...6=Saturday)
   const workByDOW = d3.rollups(
-    data,
-    (v) => v.length,
-    (d) => new Date(d.datetime).getDay()
+    data, (v) => v.length, (d) => new Date(d.datetime).getDay()
   );
   const busiestDOWIdx = d3.greatest(workByDOW, (d) => d[1])?.[0];
   const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -122,7 +107,7 @@ export function renderCommitInfo(data, commits) {
 }
 
 /* =======================================================
-   Step 2 & 3: Scatterplot + Axes + Gridlines + Tooltip
+   Tooltip helpers
    ======================================================= */
 function renderTooltipContent(commit) {
   if (!commit) return;
@@ -149,13 +134,14 @@ function updateTooltipVisibility(isVisible) {
 function updateTooltipPosition(event) {
   const tooltip = document.getElementById('commit-tooltip');
   if (!tooltip) return;
-  // Slight offset so we don't sit exactly under the cursor
   const OFFSET = 12;
   tooltip.style.left = `${event.clientX + OFFSET}px`;
   tooltip.style.top = `${event.clientY + OFFSET}px`;
 }
 
-
+/* =======================================================
+   Step 2–4: Scatterplot + Axes + Gridlines + Sizing + Tooltip
+   ======================================================= */
 export function renderScatterPlot(data, commits) {
   // Dimensions
   const width = 1000;
@@ -179,7 +165,7 @@ export function renderScatterPlot(data, commits) {
     .domain([0, 24])
     .range([height, 0]);
 
-  // Usable area (account for margins)
+  // Usable area
   const usableArea = {
     top: margin.top,
     right: width - margin.right,
@@ -188,8 +174,6 @@ export function renderScatterPlot(data, commits) {
     width: width - margin.left - margin.right,
     height: height - margin.top - margin.bottom,
   };
-
-  // Update scale ranges to honor margins
   xScale.range([usableArea.left, usableArea.right]);
   yScale.range([usableArea.bottom, usableArea.top]);
 
@@ -212,10 +196,10 @@ export function renderScatterPlot(data, commits) {
     .attr('transform', `translate(${usableArea.left}, 0)`)
     .call(yAxis);
 
-  // Container for dots
+  // Dots container
   const dots = svg.append('g').attr('class', 'dots');
 
-  // Brush
+  // Brush (Step 5)
   function brushed(event) {
     const selection = event.selection;
     svg.selectAll('circle')
@@ -224,20 +208,18 @@ export function renderScatterPlot(data, commits) {
     renderSelectionCount(selection, commits, xScale, yScale);
     renderLanguageBreakdown(selection, commits, xScale, yScale);
   }
-
   svg.call(d3.brush().on('start brush end', brushed));
 
-  // Ensure tooltips still work
+  // Keep tooltips working: put dots above overlay
   svg.selectAll('.dots, .overlay ~ *').raise();
 
-  // Radius scale by lines (sqrt for area-correct sizing)
+  // Radius scale (sqrt = area-correct)
   let [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
   if (minLines == null || maxLines == null) { minLines = 0; maxLines = 1; }
   if (minLines === maxLines) { minLines = 0; }
   const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([3, 24]);
-  console.debug('rScale extent', { minLines, maxLines });
 
-  // Size legend (min/median/max)
+  // Size legend (min / mid / max)
   const legend = svg.append('g').attr('class', 'size-legend');
   const legendValues = [minLines, (minLines + maxLines) / 2, maxLines].filter(v => isFinite(v));
   const legendX = usableArea.right - 140;
@@ -263,7 +245,7 @@ export function renderScatterPlot(data, commits) {
           .attr('font-size', 12);
       });
 
-  // Render dots (largest first so small dots stay hoverable on top)
+  // Render dots (largest first so small dots remain hoverable on top)
   const sortedCommits = d3.sort(commits, (d) => -(d.totalLines ?? 0));
 
   dots.selectAll('circle')
@@ -294,77 +276,6 @@ export function renderScatterPlot(data, commits) {
   dots.raise();
 }
 
-  svg.call(d3.brush().on('start brush end', brushed));
-
-  // Ensure tooltips still work (overlay comes before dots)
-  svg.selectAll('.dots, .overlay ~ *').raise();
-
-
-  // Step 4.1/4.2: radius scale by total lines (sqrt for area-correct sizing)
-  let [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
-  if (minLines == null || maxLines == null) { minLines = 0; maxLines = 1; }
-  if (minLines === maxLines) { minLines = 0; }
-  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([3, 24]);
-
-  // Size legend (min/median/max) - placed AFTER rScale is defined
-  const legend = svg.append('g').attr('class', 'size-legend');
-  const legendValues = [minLines, (minLines + maxLines) / 2, maxLines].filter(v => isFinite(v));
-  const legendX = usableArea.right - 140;
-  const legendY = usableArea.top + 10;
-  legend.selectAll('g')
-    .data(legendValues)
-    .join('g')
-      .attr('transform', (d,i) => `translate(${legendX}, ${legendY + i*40})`)
-      .each(function(d){
-        const g = d3.select(this);
-        g.append('circle')
-          .attr('r', rScale(d))
-          .attr('cx', 0)
-          .attr('cy', 0)
-          .attr('fill', 'steelblue')
-          .style('fill-opacity', 0.3)
-          .attr('stroke', 'currentColor')
-          .attr('stroke-width', 1);
-        g.append('text')
-          .attr('x', 18)
-          .attr('y', 4)
-          .text(d3.format(',')(Math.round(d)))
-          .attr('font-size', 12);
-      });
-
-
-  // Step 4.3: sort so large dots render first, smaller dots remain hoverable on top
-  const sortedCommits = d3.sort(commits, (d) => -(d.totalLines ?? 0));
-
-  dots.selectAll('circle')
-    .data(sortedCommits)
-    .join('circle')
-    .attr('cx', (d) => xScale(d.datetime))
-    .attr('cy', (d) => yScale(d.hourFrac))
-    .attr('r', (d) => rScale(d.totalLines))
-    .attr('fill', 'steelblue')
-    .attr('stroke', 'currentColor')
-    .attr('stroke-width', 0.5)
-    .style('fill-opacity', 0.7)
-    .on('mouseenter', (event, commit) => {
-      d3.select(event.currentTarget).style('fill-opacity', 1);
-      renderTooltipContent(commit);
-      updateTooltipVisibility(true);
-      updateTooltipPosition(event);
-    })
-    .on('mousemove', (event) => {
-      updateTooltipPosition(event);
-    })
-    .on('mouseleave', (event) => {
-      d3.select(event.currentTarget).style('fill-opacity', 0.7);
-      updateTooltipVisibility(false);
-    });
-
-  // Ensure dots sit above brush overlay for hover
-  d3.select('.dots').raise();
-
-
-
 /* ===== Brushing helpers (Step 5) ===== */
 function isCommitSelected(selection, commit, xScale, yScale) {
   if (!selection || !commit) return false;
@@ -394,12 +305,11 @@ function renderLanguageBreakdown(selection, commits, xScale, yScale) {
     ? commits.filter((d) => isCommitSelected(selection, d, xScale, yScale))
     : [];
 
-  const requiredCommits = selectedCommits.length ? selectedCommits : [];
-  if (requiredCommits.length === 0) {
+  if (selectedCommits.length === 0) {
     container.innerHTML = '';
     return;
   }
-  const lines = requiredCommits.flatMap((d) => d.lines || []);
+  const lines = selectedCommits.flatMap((d) => d.lines || []);
 
   const breakdown = d3.rollup(
     lines,
@@ -415,22 +325,12 @@ function renderLanguageBreakdown(selection, commits, xScale, yScale) {
   }
 }
 
-
 /* =======================================================
    Boot
    ======================================================= */
 (async function init() {
   const data = await loadData();
   const commits = processCommits(data);
-  console.debug('commits length', commits.length);
-  if (commits.length) {
-    console.debug('first commit sample', commits[0]);
-  }
   renderCommitInfo(data, commits);
   renderScatterPlot(data, commits);
 })();
-// Surface runtime errors to the page for easier debugging
-window.addEventListener('error', (e) => {
-  const el = document.getElementById('error-log');
-  if (el) el.textContent = String(e.error || e.message || e);
-});
