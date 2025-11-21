@@ -1,4 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
 
 /* =======================================================
    Step 1.1: Load and parse the CSV (with row conversion)
@@ -138,6 +139,118 @@ function updateTooltipPosition(event) {
   tooltip.style.left = `${event.clientX + OFFSET}px`;
   tooltip.style.top = `${event.clientY + OFFSET}px`;
 }
+
+// === Time filtering state ===
+let commitProgress = 100;
+
+const timeScale = d3
+  .scaleTime()
+  .domain([
+    d3.min(commits, (d) => d.datetime),
+    d3.max(commits, (d) => d.datetime),
+  ])
+  .range([0, 100]);
+
+let commitMaxTime = timeScale.invert(commitProgress);
+
+// Will get updated as user changes slider
+let filteredCommits = commits;
+
+// === Files + colors (Step 2.1–2.4) ===
+// We'll recompute lines/files inside updateFileDisplay, so here we just
+// set up the technology color scale.
+const colors = d3.scaleOrdinal(d3.schemeTableau10);
+
+// === Slider wiring ===
+const sliderEl = document.querySelector('#commit-progress');
+const commitTimeEl = document.querySelector('#commit-time');
+
+function updateFileDisplay(commitsForFiles) {
+  // Step 2.1 & 2.3: gather lines and files, sorted by line-count desc
+  const lines = commitsForFiles.flatMap((d) => d.lines);
+
+  const files = d3
+    .groups(lines, (d) => d.file)
+    .map(([name, lines]) => {
+      // if you already attach a type per file elsewhere, keep that;
+      // otherwise you can infer from the first line:
+      const firstType = lines[0]?.type;
+      return { name, lines, type: firstType };
+    })
+    .sort((a, b) => b.lines.length - a.lines.length);
+
+  const filesContainer = d3
+    .select('#files')
+    .selectAll('div')
+    .data(files, (d) => d.name)
+    .join(
+      (enter) =>
+        enter.append('div').call((div) => {
+          div.append('dt').append('code');
+          div.append('dd');
+        }),
+    );
+
+  // Filename + line count in <dt>
+  filesContainer
+    .select('dt > code')
+    .html((d) => `${d.name}<small>${d.lines.length} lines</small>`);
+
+  // Set a CSS variable on each file container to drive color
+  filesContainer.attr('style', (d) => {
+    // if you already have a specific technology id, use that instead of d.type
+    const techId = d.type ?? d.name.split('.').pop();
+    return `--color: ${colors(techId)}`;
+  });
+
+  // Step 2.2: create one .loc div per line
+  filesContainer
+    .select('dd')
+    .selectAll('div')
+    .data((d) => d.lines)
+    .join('div')
+    .attr('class', 'loc');
+}
+
+function onTimeSliderChange(event) {
+  if (!sliderEl || !commitTimeEl) return;
+
+  // 1. Update commitProgress from slider
+  commitProgress = Number(
+    event?.target?.value ?? sliderEl.value ?? 100,
+  );
+
+  // 2. Update commitMaxTime from the scale
+  commitMaxTime = timeScale.invert(commitProgress);
+
+  // 3. Update the <time> element display
+  commitTimeEl.textContent = commitMaxTime.toLocaleString('en', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+  });
+
+  // 4. Filter commits
+  filteredCommits = commits.filter(
+    (d) => d.datetime <= commitMaxTime,
+  );
+
+  // 5. Update scatter plot & commit stats & file units
+  updateScatterPlot(data, filteredCommits);
+  // If you want stats to follow the filter:
+  // renderCommitInfo(filteredCommits);
+  updateFileDisplay(filteredCommits);
+}
+
+// Attach event + initial call
+if (sliderEl) {
+  sliderEl.addEventListener('input', onTimeSliderChange);
+  // initialize once everything else has rendered
+  onTimeSliderChange();
+} else {
+  // Fallback: at least show the full set of files
+  updateFileDisplay(filteredCommits);
+}
+
 
 /* =======================================================
    Step 2–4: Scatterplot + Axes + Gridlines + Sizing + Tooltip
