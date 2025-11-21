@@ -498,3 +498,131 @@ circle.selected {
 
 .size-legend { display: none; }
 
+/* === File unit visualization (Step 2) === */
+#files {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 0.4rem 1rem;
+  margin-block: 2rem;
+}
+
+#files > div {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+#files dt {
+  grid-column: 1;
+}
+
+#files dd {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0.15em;
+  padding-top: 0.6em;
+  margin-left: 0;
+}
+
+#files dt code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+#files dt code small {
+  display: block;
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* Individual line units */
+.loc {
+  display: flex;
+  width: 0.5em;
+  aspect-ratio: 1;
+  background: var(--color, steelblue);
+  border-radius: 50%;
+}
+
+/* === Scrollytelling layout (Step 3.1) === */
+#scrolly-1 {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  margin-block: 2rem;
+}
+
+#scrolly-1 > * {
+  flex: 1;
+}
+
+#scatter-story {
+  position: relative;
+}
+
+#scatter-story .step {
+  padding-block: 1.5rem 2rem;
+  border-bottom: 1px solid oklch(90% 3% 200 / 60%);
+}
+
+#scatter-story .step:last-child {
+  border-bottom: none;
+}
+
+#scatter-plot {
+  position: sticky;
+  top: 0;
+  left: 0;
+  bottom: auto;
+  height: 50vh; /* required for sticky to have an effect */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Make the chart consume most of the sticky height */
+#scatter-plot #chart {
+  flex: 1;
+}
+
+/* Responsive: stack scrolly columns on small screens */
+@media (max-width: 700px) {
+  #scrolly-1 {
+    flex-direction: column;
+  }
+  #scatter-plot {
+    position: static;
+    height: auto;
+  }
+}
+/* === Commit time slider (Step 1.1) === */
+#commit-filter {
+  margin-block: 1rem;
+}
+
+#commit-filter label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+#commit-progress {
+  flex: 1;
+}
+
+#commit-time {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+/* Dots in scatter plot: add radius-dependent transitions */
+.dots circle {
+  transition: all 200ms, r calc(var(--r) * 100ms);
+  transform-origin: center;
+  transform-box: fill-box;
+  @starting-style {
+    r: 0;
+  }
+}
