@@ -24,15 +24,17 @@
 		"year": 2025
 	},
 	{
-		"title": "Laudantium reprehenderit placeat perspiciatis.",
+		"title": "Consequuntur autem eos facere.",
 		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
 		"description": "Quo minus perferendis nulla corrupti repellat dolorem dolore assumenda sit minima ducimus quidem ullam, id ipsa dicta tempora laborum officiis unde possimus cumque nobis alias inventore! Ullam repudiandae iusto nam.",
 		"year": 2025
 	},
 	{
-		"title": "Consequuntur autem eos facere.",
-		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Laborum alias ea unde harum aspernatur? Molestiae, veritatis, possimus, numquam ex excepturi quod ducimus sit odit optio quibusdam sequi aliquid itaque tempore perspiciatis placeat expedita vero voluptates. Sit, aspernatur sint!",
+		"title": "Modeling How Moisture Affects Wildfire Spread",
+		"image": "../images/fire_propagation.png",
+		"description": "MATLAB cellular automaton simulation modeling wildfire propagation under varying moisture and drying conditions. Explores ignition probability, moisture inhibition, and fire-induced drying dynamics.",
+		"url":"https://github.com/mam084/Wildfire_Spread/blob/main/Modeling_How_Moisture_Affects_Wildfire_Spread.pdf",
+		"repo": "https://github.com/mam084/Wildfire_Spread",
 		"year": 2024
 	},
 	{
