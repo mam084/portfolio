@@ -136,8 +136,8 @@ export function renderProjects(projects, containerElement, headingLevel = "h2") 
     const title = p?.title ?? "Untitled Project";
     const img   = resolveAsset(p?.image ?? "images/placeholder.png");
     const desc  = p?.description ?? "";
-    const url   = p?.url ?? null;
-    const repo  = p?.repo ?? null;
+    let url   = p?.url ?? null;
+    let repo  = p?.repo ?? null;
     const year  = p?.year ?? null;
 
     const yearBadge = year
