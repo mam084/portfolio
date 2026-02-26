@@ -132,9 +132,14 @@ nav a:hover {
   }
 
   .projects > article p {
-    grid-row: 4;
+    grid-row: 3;
     margin: 0;
   }
+
+  .projects > article .project-links {
+    grid-row: 4;
+    margin: 0;
+}
 }
 
 h1 { font-size: 400%; }      /* clearly larger than h2 for contrast */
