@@ -1,41 +1,39 @@
-import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
+import { fetchJSON, renderProjects, fetchGitHubData } from "./global.js";
 
 async function loadProjects() {
-  try {
-    const data = await fetchJSON(`./lib/projects.json?v=${Date.now()}`);
-    if (!Array.isArray(data)) throw new Error('Invalid JSON');
-    return data;
-  } catch (err) {
-    console.error('Could not load projects.json', err);
-    throw err;
-  }
+  const data = await fetchJSON(`./lib/projects.json?v=${Date.now()}`);
+  if (!Array.isArray(data)) throw new Error("Invalid projects.json format");
+  return data;
 }
 
 async function init() {
+  // ---- Homepage projects ----
   try {
     const projects = await loadProjects();
 
-    // Featured projects
-    const featured = projects.filter(p => p.featured);
+    const container = document.querySelector(".projects");
+    if (!container) throw new Error("Missing .projects container on page");
 
-    const toShow = featured.length
-      ? featured
-      : projects
-          .slice()
-          .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
-          .slice(0, 3);
+    const featured = projects.filter((p) => p.featured);
 
-    renderProjects(toShow, container, 'h3');
+    // If fewer than 3 featured, fall back to newest 3 by year
+    const toShow =
+      featured.length >= 3
+        ? featured.slice(0, 3)
+        : projects
+            .slice()
+            .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
+            .slice(0, 3);
 
-    const container = document.querySelector('.projects');
-    renderProjects(latest, container, 'h3');
+    renderProjects(toShow, container, "h3");
   } catch (err) {
-    console.error('Failed to load projects on home:', err);
+    console.error("Failed to load projects on home:", err);
   }
 
+  // ---- GitHub stats (optional section) ----
   try {
-    const githubData = await fetchGitHubData('mam084');
-    const profileStats = document.querySelector('#profile-stats');
+    const githubData = await fetchGitHubData("mam084");
+    const profileStats = document.querySelector("#profile-stats");
     if (profileStats) {
       profileStats.innerHTML = `
         <h2 class="profile-stats__title">GitHub Profile</h2>
@@ -48,19 +46,12 @@ async function init() {
       `;
     }
   } catch (err) {
-    console.error('GitHub stats failed:', err);
-    const profileStats = document.querySelector('#profile-stats');
-    if (profileStats) {
-      profileStats.innerHTML = `
-        <h2 class="profile-stats__title">GitHub Profile</h2>
-        <p class="error">Couldn’t load GitHub stats right now.</p>
-      `;
-    }
+    console.error("GitHub stats failed:", err);
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
 } else {
   init();
 }
