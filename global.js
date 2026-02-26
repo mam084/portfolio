@@ -144,11 +144,25 @@ export function renderProjects(projects, containerElement, headingLevel = "h2") 
       ? `<span class="project-year" aria-label="Year">${year}</span>`
       : "";
 
+    // Back-compat: if projects.json uses links: [{label, href}], derive url/repo from it
+    if ((!url || !repo) && Array.isArray(p?.links)) {
+      for (const link of p.links) {
+        const label = String(link?.label ?? '').toLowerCase();
+        const href  = link?.href ?? null;
+        if (!href) continue;
+
+        if (!repo && label.includes('repo')) repo = href;
+        if (!url  && (label === 'url' || label.includes('live') || label.includes('demo'))) url = href;
+      }
+    }
+
+    // For conditional rendering
+    const hasLinks = Boolean(url || repo);
+
     const linksHTML = `
       ${url ? `<a class="project-link demo" href="${url}" target="_blank" rel="noopener noreferrer">Live</a>` : ''}
       ${repo ? `<a class="project-link code" href="${repo}" target="_blank" rel="noopener noreferrer">Repo</a>` : ''}
     `;
-
 
     article.innerHTML = `
       <${H} class="project-title">${title} ${yearBadge}</${H}>
