@@ -113,7 +113,7 @@ nav a:hover {
   .projects > article {
     display: grid;
     grid-template-rows: subgrid; /* inherit the parent row tracks */
-    grid-row: span 3;            /* each article spans 3 rows of the parent */
+    grid-row: span 4;            /* each article spans 3 rows of the parent */
     gap: 0.5em;                  /* space within each article */
   }
 
@@ -132,7 +132,7 @@ nav a:hover {
   }
 
   .projects > article p {
-    grid-row: 3;
+    grid-row: 4;
     margin: 0;
   }
 }
