@@ -626,3 +626,138 @@ circle.selected {
     r: 0;
   }
 }
+
+/* ===== Homepage layout (new index.html classes) ===== */
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: Canvas;
+  border: 1px solid oklch(50% 10% 200 / 40%);
+  border-radius: 0.5rem;
+}
+.skip-link:focus { left: 1rem; z-index: 9999; }
+
+.site-header { margin-top: 0.75rem; }
+
+.nav {
+  /* keep your existing nav baseline but work with the new structure */
+  --border-color: oklch(50% 10% 200 / 40%);
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.nav__brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.nav__links {
+  margin-left: auto;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav__links a {
+  text-decoration: none;
+  color: inherit;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+}
+.nav__links a:hover {
+  background: color-mix(in oklch, var(--color-accent), canvas 85%);
+}
+
+.page { padding-bottom: 2.5rem; }
+
+.hero {
+  padding: 1.25rem 1.25rem;
+  border: 1px solid oklch(50% 10% 200 / 40%);
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, Canvas 92%, CanvasText 2%);
+  margin-bottom: 1.5rem;
+}
+
+.hero__kicker {
+  margin: 0 0 0.35rem 0;
+  opacity: 0.85;
+  font-size: 0.95rem;
+}
+
+.hero__title {
+  /* override your global h1 400% for the homepage so it’s not comically large */
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  margin: 0.1rem 0 0.5rem 0;
+}
+
+.hero__subtitle {
+  margin: 0 0 1rem 0;
+  max-width: 65ch;
+  opacity: 0.95;
+}
+
+.hero__cta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0.75rem 0 0.75rem 0;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.6rem;
+  border: 1px solid oklch(50% 10% 200 / 40%);
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.button--primary {
+  background: color-mix(in oklch, var(--color-accent), canvas 85%);
+}
+
+.button--secondary {
+  background: transparent;
+}
+
+.hero__highlights {
+  margin: 0.75rem 0 0 1.25rem;
+}
+
+.section { margin-top: 1.75rem; }
+
+.section__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section__link { text-decoration: none; }
+.section__link:hover { text-decoration: underline; text-decoration-color: var(--color-accent); }
+
+.site-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid oklch(50% 10% 200 / 40%);
+  opacity: 0.9;
+}
+
+.projects > article {
+  border: 1px solid oklch(50% 10% 200 / 40%);
+  border-radius: 0.75rem;
+  padding: 0.9rem;
+  background: color-mix(in oklab, Canvas 94%, CanvasText 1%);
+}
+.projects > article h2 { font-size: 1.1rem; }
