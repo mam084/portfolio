@@ -3,24 +3,30 @@
 		"title": "Persuasive/Deceptive Visualization",
 		"image": "../images/Energy_Group_Bar.png",
 		"description": "Two opposing visualizations with rationale and ethics reflection.",
-		"url": "https://mam084.github.io/deceptive_visualization/", 
-		"repo": "https://github.com/mam084/deceptive_visualization",
+		"links": [
+			{ "label": "url", "href": "https://mam084.github.io/deceptive_visualization/" },
+			{ "label": "Repo", "href": "https://github.com/mam084/deceptive_visualization" }
+		],
 		"year": 2025
 	},
 	{
 		"title": "Visualizing Price per Category",
 		"image": "../images/plot_value_by_category_boxplot.png",
 		"description": "Which food category costs the most per calorie in a typical grocery store? This project explores and attempts to answer this question.",
-		"url": "https://github.com/mam084/project1/blob/main/Project%201_%20Expository%20Visualization.pdf",
-		"repo": "https://github.com/mam084/project1/tree/main",
+		"links": [
+			{ "label": "url", "href": "https://github.com/mam084/project1/blob/main/Project%201_%20Expository%20Visualization.pdf" },
+			{ "label": "Repo", "href": "https://github.com/mam084/project1/tree/main" }
+		],
 		"year": 2025
 	},
 	{
 		"title": "Amazon Review Sentiment as a Predictor of Economic Trends",
 		"image": "../images/US_Economic_Indicators_Over_Time.png",
 		"description": "This project investigates whether consumer sentiment expressed in Amazon product reviews can serve as an early indicator of broader economic trends.",
-		"url": "https://github.com/mam084/dsc232amazon/blob/main/Amazon_Review_Sentiment_as_a_Predictor_of_Economic_Trends.pdf",
-		"repo": "https://github.com/mam084/dsc232amazon/tree/main",
+		"links": [
+			{ "label": "url", "href": "https://github.com/mam084/dsc232amazon/blob/main/Amazon_Review_Sentiment_as_a_Predictor_of_Economic_Trends.pdf" },
+			{ "label": "Repo", "href": "https://github.com/mam084/dsc232amazon/tree/main" }
+		],
 		"year": 2025
 	},
 	{
@@ -33,8 +39,10 @@
 		"title": "Modeling How Moisture Affects Wildfire Spread",
 		"image": "../images/fire_propagation.png",
 		"description": "MATLAB cellular automaton simulation modeling wildfire propagation under varying moisture and drying conditions. Explores ignition probability, moisture inhibition, and fire-induced drying dynamics.",
-		"url":"https://github.com/mam084/Wildfire_Spread/blob/main/Modeling_How_Moisture_Affects_Wildfire_Spread.pdf",
-		"repo": "https://github.com/mam084/Wildfire_Spread",
+		"links": [
+			{ "label": "url", "href": "https://github.com/mam084/Wildfire_Spread/blob/main/Modeling_How_Moisture_Affects_Wildfire_Spread.pdf" },
+			{ "label": "Repo", "href": "https://github.com/mam084/Wildfire_Spread" }
+		],
 		"year": 2024
 	},
 	{
