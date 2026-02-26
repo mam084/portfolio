@@ -1,33 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Matthew Mitchell: Personal Site and Portfolio</title>
-    <script src="./global.js" type="module"></script>
-    <script src="./index.js" type="module" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Matthew Mitchell | Data Science Portfolio</title>
+  <meta
+    name="description"
+    content="Matthew Mitchell — Data Science graduate student at UCSD. Machine learning, data analysis, and end-to-end projects with clear results."
+  />
+  <script src="./global.js" type="module"></script>
+  <script src="./index.js" type="module" defer></script>
 </head>
 
 <body>
-    <!-- <nav>
-    <a href="https://mam084.github.io/portfolio/">Home</a>
-    <a href="https://mam084.github.io/portfolio/contact/">Contact</a>
-    <a href="https://mam084.github.io/portfolio/projects/">Project</a>
-    <a href="https://mam084.github.io/portfolio/CV/">CV</a>
-    <a href="https://github.com/mam084" target="_blank">GitHub Profile</a>
-    </nav> -->
-    
-    <h1>Matthew Mitchell</h1>
-    <p>My name is Matthew Mitchell, and I am a graduate student at UCSD! I like
-        to play volleyball, video games, and guitar. I am also a math and science
-        teacher and a volleyball coach!
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav__brand" href="./" aria-label="Home">Matthew Mitchell</a>
+
+      <div class="nav__links">
+        <a href="./projects/">Projects</a>
+        <a href="./CV/">Resume</a>
+        <a href="https://github.com/mam084" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="page">
+    <section class="hero" aria-label="Intro">
+      <p class="hero__kicker">Data Science • Machine Learning • Analytics</p>
+
+      <h1 class="hero__title">Matthew Mitchell</h1>
+
+      <p class="hero__subtitle">
+        I’m a UC San Diego master’s student in data science who builds practical ML and analytics projects end-to-end:
+        clean data, train/evaluate models, and communicate results clearly.
+      </p>
+
+      <div class="hero__cta">
+        <a class="button button--primary" href="./projects/">View projects</a>
+        <a class="button button--secondary" href="./CV/">Download resume</a>
+      </div>
+
+      <ul class="hero__highlights" aria-label="Highlights">
+        <li>Predictive modeling (classification/regression)</li>
+        <li>Large-scale data processing (Python, SQL)</li>
+        <li>Clear writeups + visuals for non-technical audiences</li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="latest-projects">
+      <div class="section__header">
+        <h2 id="latest-projects">Latest projects</h2>
+        <a class="section__link" href="./projects/">View all →</a>
+      </div>
+
+      <!-- index.js can keep populating this -->
+      <div class="projects" aria-live="polite"></div>
+    </section>
+
+    <section class="section" aria-labelledby="about">
+      <h2 id="about">About</h2>
+      <p>
+        Outside of data science, I coach volleyball. I like work that’s measurable, iterative,
+        and focused on turning messy inputs into useful decisions.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="profile">
+      <h2 id="profile">Stats</h2>
+      <section id="profile-stats" class="profile-stats" aria-live="polite"></section>
+    </section>
+
+    <section class="section" aria-labelledby="contact-cta">
+      <h2 id="contact-cta">Want to talk?</h2>
+      <p>
+        If you’re hiring for data science / ML / analytics roles, I’d love to connect.
+      </p>
+      <div class="hero__cta">
+        <a class="button button--primary" href="./contact/">Contact me</a>
+        <a class="button button--secondary" href="mailto:matt_mitchell@mac.com">Email</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      © <span id="year"></span> Matthew Mitchell •
+      <a href="https://github.com/mam084" target="_blank" rel="noopener noreferrer">GitHub</a>
     </p>
-    <h2>Latest Projects</h2>
-    <div class="projects"></div>
-    <p><a href="./projects/">View all projects →</a></p>
-    <section id="profile-stats" class="profile-stats"></section>
-    <!-- <img src="images/chocolate_puppy.jpg" alt = "This is a photo of an adorable
-    chocolate lab puppy!"> -->
+  </footer>
+
+  <script>
+    // tiny progressive enhancement: current year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
