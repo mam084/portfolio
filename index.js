@@ -15,10 +15,17 @@ async function init() {
   try {
     const projects = await loadProjects();
 
-    const latest = projects
-      .slice()
-      .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
-      .slice(0, 3);
+    // Featured projects
+    const featured = projects.filter(p => p.featured);
+
+    const toShow = featured.length
+      ? featured
+      : projects
+          .slice()
+          .sort((a, b) => (+(b?.year ?? -Infinity)) - (+(a?.year ?? -Infinity)))
+          .slice(0, 3);
+
+    renderProjects(toShow, container, 'h3');
 
     const container = document.querySelector('.projects');
     renderProjects(latest, container, 'h3');

@@ -1,6 +1,7 @@
 [
 	{
 		"title": "Persuasive/Deceptive Visualization",
+		"featured": true,
 		"image": "../images/Energy_Group_Bar.png",
 		"description": "Two opposing visualizations with rationale and ethics reflection.",
 		"links": [
@@ -21,6 +22,7 @@
 	},
 	{
 		"title": "Amazon Review Sentiment as a Predictor of Economic Trends",
+		"featured": true,
 		"image": "../images/US_Economic_Indicators_Over_Time.png",
 		"description": "This project investigates whether consumer sentiment expressed in Amazon product reviews can serve as an early indicator of broader economic trends.",
 		"links": [
@@ -37,6 +39,7 @@
 	},
 	{
 		"title": "Modeling How Moisture Affects Wildfire Spread",
+		"featured": true,
 		"image": "../images/fire_propagation.png",
 		"description": "MATLAB cellular automaton simulation modeling wildfire propagation under varying moisture and drying conditions. Explores ignition probability, moisture inhibition, and fire-induced drying dynamics.",
 		"links": [
