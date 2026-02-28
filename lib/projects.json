@@ -1,5 +1,15 @@
 [
 	{
+		"title": "Steam Review Analysis",
+		"image": "../images/Steam_Review_Final_Confusion.png",
+		"description": "This project analyzes a dataset of Steam game metadata and user reviews to build a machine learning model that predicts whether a game will be successful based on its features and review information. It involves data cleaning, feature engineering, and supervised learning to classify games as successful or not from attributes like genres, platforms, and review scores.",
+		"links": [
+			{ "label": "Live", "href": "https://github.com/mam084/DSC-256-Steam-Reviews/blob/main/steam_success_prediction.ipynb" },
+			{ "label": "Repo", "href": "https://github.com/mam084/DSC-256-Steam-Reviews" }
+		],
+		"year": 2025
+	},
+	{
 		"title": "Persuasive/Deceptive Visualization",
 		"featured": true,
 		"image": "../images/Energy_Group_Bar.png",
@@ -11,12 +21,12 @@
 		"year": 2025
 	},
 	{
-		"title": "Visualizing Price per Category",
-		"image": "../images/plot_value_by_category_boxplot.png",
-		"description": "Which food category costs the most per calorie in a typical grocery store? This project explores and attempts to answer this question.",
+		"title": "Emissions Explorer",
+		"image": "../images/Gas_Emission_Trend.png",
+		"description": "This project explores how greenhouse gas emissions have changed over time across regions and sectors, using interactive visualizations to highlight which sources and gases are driving overall emissions trends.",
 		"links": [
-			{ "label": "Live", "href": "https://github.com/mam084/project1/blob/main/Project%201_%20Expository%20Visualization.pdf" },
-			{ "label": "Repo", "href": "https://github.com/mam084/project1/tree/main" }
+			{ "label": "Live", "href": "https://mam084.github.io/Emissions_Explorer/" },
+			{ "label": "Repo", "href": "https://github.com/mam084/Emissions_Explorer" }
 		],
 		"year": 2025
 	},
@@ -46,12 +56,6 @@
 			{ "label": "Live", "href": "https://github.com/mam084/Wildfire_Spread/blob/main/Modeling_How_Moisture_Affects_Wildfire_Spread.pdf" },
 			{ "label": "Repo", "href": "https://github.com/mam084/Wildfire_Spread" }
 		],
-		"year": 2024
-	},
-	{
-		"title": "Quos sint quaerat omnis?",
-		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Est neque, velit nam rerum error odio voluptates voluptatem magnam laboriosam ad? Doloribus, id et itaque unde porro totam ullam quaerat blanditiis odit animi eveniet aut, voluptate velit iure odio.",
 		"year": 2024
 	},
 	{
