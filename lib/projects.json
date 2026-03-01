@@ -62,5 +62,11 @@
 			{ "label": "Repo", "href": "https://github.com/mam084/Wildfire_Spread" }
 		],
 		"year": 2024
+	},
+	{
+		"title": "Project in Progress: ASL Recognition",
+		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
+		"description": "Developing a deep learning pipeline for ASL video classification using CNN and CNN-LSTM architectures. Evaluating signer-independent generalization, bounding-box preprocessing, and top-k accuracy across controlled experimental splits.",
+		"year": 2026
 	}
 ]
