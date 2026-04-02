@@ -1,5 +1,16 @@
 [
 	{
+		"title": "ASL Interpretation with Deep Learning",
+		"featured": true,
+		"image": "../images/asl_image.png",
+		"description": "Developing a deep learning pipeline for ASL video classification using CNN and CNN-LSTM architectures. Evaluating signer-independent generalization, bounding-box preprocessing, and top-k accuracy across controlled experimental splits.",
+		"links": [
+			{ "label": "Live", "href": "https://github.com/mam084/asl_recognition/blob/main/asl_recognition_report.pdf" },
+			{ "label": "Repo", "href": "https://github.com/mam084/asl_recognition" }
+		],
+		"year": 2026
+	},
+	{
 		"title": "Steam Review Analysis",
 		"featured": true,
 		"image": "../images/Steam_Review_Final_Confusion.png",
@@ -44,7 +55,6 @@
 	},
 	{
 		"title": "Time-Series Modeling of Mental Health Indicators",
-		"featured": true,
 		"image": "../images/SLSR.png",
 		"description": "Time-series analysis of CDC mental health survey data using Bayesian and Prophet models to forecast national anxiety and depression trends and quantify demographic disparities.",
 		"links": [
@@ -62,11 +72,5 @@
 			{ "label": "Repo", "href": "https://github.com/mam084/Wildfire_Spread" }
 		],
 		"year": 2024
-	},
-	{
-		"title": "Project in Progress: ASL Recognition",
-		"image": "https://vis-society.github.io/labs/2/images/empty.svg",
-		"description": "Developing a deep learning pipeline for ASL video classification using CNN and CNN-LSTM architectures. Evaluating signer-independent generalization, bounding-box preprocessing, and top-k accuracy across controlled experimental splits.",
-		"year": 2026
 	}
 ]
