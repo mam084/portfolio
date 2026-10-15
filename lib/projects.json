@@ -5,6 +5,7 @@
 		"image": "../images/three_houses_optimizer.png",
 		"description": "Interactive Streamlit app that recommends class paths and builds teams for Fire Emblem: Three Houses. Scrapes game data, detects each character's natural role with cosine similarity against role archetypes, scores classes with eligibility and weapon-rank constraints, and simulates stat growth along the full path. Backed by a 200+ test suite and CI.",
 		"links": [
+			{ "label": "Live", "href": "https://three-houses-optimizer.streamlit.app" },
 			{ "label": "Repo", "href": "https://github.com/mam084/three-houses-optimizer" }
 		],
 		"year": 2026
