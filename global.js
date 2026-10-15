@@ -154,13 +154,21 @@ export function renderProjects(projects, containerElement, headingLevel = "h2") 
       }
     }
 
-    // For conditional rendering
-    const hasLinks = Boolean(url || repo);
+    // Show every link with its own label (Live, Report, Notebook, Repo, ...).
+    // Fall back to the url/repo fields for entries that don't use `links`.
+    const links = Array.isArray(p?.links) && p.links.length
+      ? p.links.filter((l) => l?.href)
+      : [
+          ...(url ? [{ label: "Live", href: url }] : []),
+          ...(repo ? [{ label: "Repo", href: repo }] : []),
+        ];
 
-    const linksHTML = `
-      ${url ? `<a class="project-link demo" href="${url}" target="_blank" rel="noopener noreferrer">Live</a>` : ''}
-      ${repo ? `<a class="project-link code" href="${repo}" target="_blank" rel="noopener noreferrer">Repo</a>` : ''}
-    `;
+    const linksHTML = links
+      .map((l) => {
+        const kind = String(l.label ?? "").toLowerCase().includes("repo") ? "code" : "demo";
+        return `<a class="project-link ${kind}" href="${l.href}" target="_blank" rel="noopener noreferrer">${l.label ?? "Link"}</a>`;
+      })
+      .join(" ");
 
     article.innerHTML = `
       <${H} class="project-title">${title} ${yearBadge}</${H}>

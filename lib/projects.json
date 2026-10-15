@@ -1,23 +1,22 @@
 [
 	{
-		"title": "ASL Interpretation with Deep Learning",
+		"title": "Three Houses Class Optimizer",
 		"featured": true,
-		"image": "../images/asl_image.png",
-		"description": "Developing a deep learning pipeline for ASL video classification using CNN and CNN-LSTM architectures. Evaluating signer-independent generalization, bounding-box preprocessing, and top-k accuracy across controlled experimental splits.",
+		"image": "../images/three_houses_optimizer.png",
+		"description": "Interactive Streamlit app that recommends class paths and builds teams for Fire Emblem: Three Houses. Scrapes game data, detects each character's natural role with cosine similarity against role archetypes, scores classes with eligibility and weapon-rank constraints, and simulates stat growth along the full path. Backed by a 200+ test suite and CI.",
 		"links": [
-			{ "label": "Live", "href": "https://github.com/mam084/asl_recognition/blob/main/asl_recognition_report.pdf" },
-			{ "label": "Repo", "href": "https://github.com/mam084/asl_recognition" }
+			{ "label": "Repo", "href": "https://github.com/mam084/three-houses-optimizer" }
 		],
 		"year": 2026
 	},
 	{
-		"title": "Steam Review Analysis",
+		"title": "Steam Game Success Prediction",
 		"featured": true,
 		"image": "../images/Steam_Review_Final_Confusion.png",
-		"description": "This project analyzes a dataset of Steam game metadata and user reviews to build a machine learning model that predicts whether a game will be successful based on its features and review information. It involves data cleaning, feature engineering, and supervised learning to classify games as successful or not from attributes like genres, platforms, and review scores.",
+		"description": "Predicts whether a Steam game will be well received using only information available at launch: genres, tags, feature specs, title, and release year. Review data defines the label but is kept out of the inputs to avoid leakage. TF-IDF and metadata pipelines with logistic regression and tuned tree ensembles reach about 0.80 ROC AUC on a held-out test set.",
 		"links": [
-			{ "label": "Live", "href": "https://github.com/mam084/DSC-256-Steam-Reviews/blob/main/steam_success_prediction.ipynb" },
-			{ "label": "Repo", "href": "https://github.com/mam084/DSC-256-Steam-Reviews" }
+			{ "label": "Notebook", "href": "https://github.com/mam084/steam-game-success-prediction/blob/main/steam_success_prediction.ipynb" },
+			{ "label": "Repo", "href": "https://github.com/mam084/steam-game-success-prediction" }
 		],
 		"year": 2025
 	},
@@ -25,31 +24,31 @@
 		"title": "Amazon Review Sentiment as a Predictor of Economic Trends",
 		"featured": true,
 		"image": "../images/US_Economic_Indicators_Over_Time.png",
-		"description": "This project investigates whether consumer sentiment expressed in Amazon product reviews can serve as an early indicator of broader economic trends.",
+		"description": "Team project using a PySpark NLP pipeline on roughly 30 GB of Amazon reviews to test whether consumer sentiment expressed in product reviews can serve as an early indicator of U.S. GDP growth.",
 		"links": [
-			{ "label": "Live", "href": "https://github.com/mam084/dsc232amazon/blob/main/Amazon_Review_Sentiment_as_a_Predictor_of_Economic_Trends.pdf" },
-			{ "label": "Repo", "href": "https://github.com/mam084/dsc232amazon/tree/main" }
+			{ "label": "Report", "href": "https://github.com/mam084/amazon-sentiment-economic-trends/blob/main/Amazon_Review_Sentiment_as_a_Predictor_of_Economic_Trends.pdf" },
+			{ "label": "Repo", "href": "https://github.com/mam084/amazon-sentiment-economic-trends" }
 		],
 		"year": 2025
 	},
-	
+	{
+		"title": "ASL Interpretation with Deep Learning",
+		"featured": true,
+		"image": "../images/asl_image.png",
+		"description": "Deep learning pipeline for ASL video classification using CNN and CNN-LSTM architectures, processed with PySpark on about 10 GB of video data. Evaluates signer-independent generalization, bounding-box preprocessing, and top-k accuracy across controlled experimental splits.",
+		"links": [
+			{ "label": "Report", "href": "https://github.com/mam084/asl_recognition/blob/main/asl_recognition_report.pdf" },
+			{ "label": "Repo", "href": "https://github.com/mam084/asl_recognition" }
+		],
+		"year": 2026
+	},
 	{
 		"title": "Emissions Explorer",
 		"image": "../images/Gas_Emission_Trend.png",
-		"description": "This project explores how greenhouse gas emissions have changed over time across regions and sectors, using interactive visualizations to highlight which sources and gases are driving overall emissions trends.",
+		"description": "Interactive D3 visualization of quarterly greenhouse gas emissions (IMF data, 2010–2025) by region, industry, and gas type. Shows which sectors drove each region's emissions trend, including the 2020 pandemic dip and rebound.",
 		"links": [
 			{ "label": "Live", "href": "https://mam084.github.io/Emissions_Explorer/" },
 			{ "label": "Repo", "href": "https://github.com/mam084/Emissions_Explorer" }
-		],
-		"year": 2025
-	},
-	{
-		"title": "Persuasive/Deceptive Visualization",
-		"image": "../images/Energy_Group_Bar.png",
-		"description": "Two opposing visualizations with rationale and ethics reflection.",
-		"links": [
-			{ "label": "Live", "href": "https://mam084.github.io/deceptive_visualization/" },
-			{ "label": "Repo", "href": "https://github.com/mam084/deceptive_visualization" }
 		],
 		"year": 2025
 	},
@@ -58,7 +57,7 @@
 		"image": "../images/SLSR.png",
 		"description": "Time-series analysis of CDC mental health survey data using Bayesian and Prophet models to forecast national anxiety and depression trends and quantify demographic disparities.",
 		"links": [
-			{ "label": "Live", "href": "https://github.com/mam084/Mental_Health_Indicators/blob/main/Mental_Health_Indicator_Report.pdf" },
+			{ "label": "Report", "href": "https://github.com/mam084/Mental_Health_Indicators/blob/main/Mental_Health_Indicator_Report.pdf" },
 			{ "label": "Repo", "href": "https://github.com/mam084/Mental_Health_Indicators" }
 		],
 		"year": 2024
@@ -68,7 +67,7 @@
 		"image": "../images/fire_propagation.png",
 		"description": "MATLAB cellular automaton simulation modeling wildfire propagation under varying moisture and drying conditions. Explores ignition probability, moisture inhibition, and fire-induced drying dynamics.",
 		"links": [
-			{ "label": "Live", "href": "https://github.com/mam084/Wildfire_Spread/blob/main/Modeling_How_Moisture_Affects_Wildfire_Spread.pdf" },
+			{ "label": "Report", "href": "https://github.com/mam084/Wildfire_Spread/blob/main/Modeling_How_Moisture_Affects_Wildfire_Spread.pdf" },
 			{ "label": "Repo", "href": "https://github.com/mam084/Wildfire_Spread" }
 		],
 		"year": 2024
