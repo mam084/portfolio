@@ -35,7 +35,7 @@
 		"title": "ASL Interpretation with Deep Learning",
 		"featured": true,
 		"image": "../images/asl_image.png",
-		"description": "Deep learning pipeline for ASL video classification using CNN and CNN-LSTM architectures, processed with PySpark on about 10 GB of video data. Evaluates signer-independent generalization, bounding-box preprocessing, and top-k accuracy across controlled experimental splits.",
+		"description": "Team project recognizing word-level ASL signs from video with PyTorch CNN and CNN-LSTM models on the WLASL dataset. Compares random and signer-independent splits to measure how well models generalize to new signers, and tests whether cropping to the signer helps.",
 		"links": [
 			{ "label": "Report", "href": "https://github.com/mam084/asl_recognition/blob/main/asl_recognition_report.pdf" },
 			{ "label": "Repo", "href": "https://github.com/mam084/asl_recognition" }
